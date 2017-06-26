@@ -1,13 +1,20 @@
 import React from 'react';
+import Cell from './Cell';
 import {createRelativeFontUpdater, getCustomSheetUpdater} from '../modules/dynamicFont'
 
 class CrosswordGrid extends React.Component {
   constructor(props) {
     super(props);
     this.state ={
-
+      selectedCell: 1
     }
-    this.size = 15;
+    this.size = this.props.puzzle.size.cols;
+    this.changeSelectedCell = this.changeSelectedCell.bind(this);
+  }
+
+  changeSelectedCell(cellId) {
+    debugger;
+    this.setState({selectedCell: cellId})
   }
 
   componentDidMount() {
@@ -23,15 +30,18 @@ class CrosswordGrid extends React.Component {
 
   render() {
     let cells = [];
-    for (var i = 0; i < this.size; i++) {
-      for (var j = 0; j < this.size; j++) {
-        cells.push(
-          <div className="cell">
-            <div className="cell-number">12</div>
-            <div className="cell-letter">A</div>
-          </div>
-        )
-      }
+    let grid = this.props.puzzle.grid
+    let gridnums = this.props.puzzle.gridnums
+    for (var i = 0; i < grid.length; i++) {
+
+      cells.push(
+        <Cell
+          key={i}
+          number={gridnums[i]}
+          letter={grid[i]}
+          selected={this.state.selectedCell === i + 1}
+           />
+      )
     }
 
     return(

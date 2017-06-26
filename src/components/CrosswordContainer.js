@@ -17,7 +17,8 @@ class CrosswordContainer extends React.Component {
   render() {
     return(
       <div>
-        <CrosswordGrid />
+        <CrosswordGrid
+          puzzle={this.state.puzzle} />
       </div>
 
     )
