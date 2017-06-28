@@ -6,7 +6,8 @@ class CrosswordContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      puzzle: this.props.initialPuzzle
+      puzzle: this.props.initialPuzzle,
+      clueDirection: "across"
     }
     this.replacePuzzle = this.replacePuzzle.bind(this);
   }
@@ -20,11 +21,13 @@ class CrosswordContainer extends React.Component {
       <div id='crossword-container' className="row">
         <div className='small-12 large-6 columns'>
           <CrosswordGrid
-            puzzle={this.state.puzzle} />
+            puzzle={this.state.puzzle}
+            clueDirection={this.state.clueDirection} />
         </div>
         <div className='small-12 large-6 columns'>
           <CluesContainer
-            clues={this.state.puzzle.clues} />
+            clues={this.state.puzzle.clues}
+            clueDirection={this.state.clueDirection} />
         </div>
       </div>
 
