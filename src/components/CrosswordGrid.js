@@ -39,8 +39,19 @@ class CrosswordGrid extends React.Component {
     let key = event.key
     if (key.match(/[a-z]/) && key.length === 1){
       this.updateUserLetters(key)
-    } else if (key === 'Backspace') {
-      this.updateUserLetters('')
+    } else {
+      switch (key) {
+        case 'Backspace':
+          this.updateUserLetters('');
+          break;
+        case 'ArrowUp':
+        case 'ArrowDown':
+        case 'ArrowLeft':
+        case 'ArrowRight':
+          console.log(key);
+          break;
+        default:
+      }
     }
   }
 
