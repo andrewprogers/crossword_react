@@ -18,7 +18,7 @@ const Cell = props => {
         type='text'
         className="cell-letter row"
         value={letter}
-        onKeyDownCapture={props.onKeyPress}/>
+        onKeyDownCapture={props.onKeyDown}/>
     </div>
   )
 }
