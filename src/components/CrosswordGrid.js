@@ -32,6 +32,27 @@ class CrosswordGrid extends React.Component {
     this.setState({userLetters: newLetters});
   }
 
+  createCells() {
+    let gridnums = this.props.puzzle.gridnums;
+    let cells = this.state.userLetters.map((letter, index) => {
+      let clickHandler = () => {this.changeSelectedCell(index)}
+      let keyPressHandler = event => {
+        this.updateUserLetters(event, index)
+      }
+      return(
+        <Cell
+          key={index}
+          number={gridnums[index]}
+          letter={letter}
+          selected={this.state.selectedCell === index}
+          onKeyPress={keyPressHandler}
+          onClick={clickHandler}
+           />
+       )
+    })
+    return cells;
+  }
+
   componentDidMount() {
     let gridElement = document.getElementById('grid-container');
     let cellFontUpdater = createRelativeFontUpdater(gridElement, '#grid-container .cell', 1.3 * this.size);
@@ -44,26 +65,7 @@ class CrosswordGrid extends React.Component {
   }
 
   render() {
-    let cells = [];
-    let grid = this.state.userLetters;
-    let gridnums = this.props.puzzle.gridnums
-    for (var i = 0; i < grid.length; i++) {
-      let cellIndex = i;
-      let clickHandler = () => {this.changeSelectedCell(cellIndex)}
-      let keyPressHandler = event => {
-        this.updateUserLetters(event, cellIndex)
-      }
-      cells.push(
-        <Cell
-          key={i}
-          number={gridnums[i]}
-          letter={grid[i]}
-          selected={this.state.selectedCell === cellIndex}
-          onKeyPress={keyPressHandler}
-          onClick={clickHandler}
-           />
-      )
-    }
+    let cells = this.createCells();
 
     return(
       <div className="scale-container">
