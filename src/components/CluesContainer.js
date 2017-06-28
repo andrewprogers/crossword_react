@@ -7,10 +7,12 @@ const CluesContainer = props => {
       <Clues
         type='across'
         clues={props.clues.across}
+        clueDirection={props.clueDirection}
         />
       <Clues
         type='down'
         clues={props.clues.down}
+        clueDirection={props.clueDirection}
         />
     </div>
   )

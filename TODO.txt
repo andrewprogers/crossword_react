@@ -1,6 +1,7 @@
 -allow clueHighlighting
   x-refactor selectedCell to Crossword container state
-  -refactor clues container to const
+  x-refactor clues container to const
+  -refactor clues to const
   -style selected Clues
   -allow clue selection from clues
   -allow across / down rotation from cell clicks
