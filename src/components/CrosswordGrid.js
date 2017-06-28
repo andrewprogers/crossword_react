@@ -5,15 +5,31 @@ import {createRelativeFontUpdater, getCustomSheetUpdater} from '../modules/dynam
 class CrosswordGrid extends React.Component {
   constructor(props) {
     super(props);
-    this.state ={
-      selectedCell: 1
-    }
+
     this.size = this.props.puzzle.size.cols;
+    let emptyLetters = []
+    let totalLength = this.size * this.size;
+    for (var i = 0; i < totalLength ; i++) {
+      emptyLetters.push('')
+    }
+
+    this.state ={
+      selectedCell: 1,
+      userLetters: emptyLetters
+    }
+
     this.changeSelectedCell = this.changeSelectedCell.bind(this);
+    this.updateUserLetters = this.updateUserLetters.bind(this)
   }
 
   changeSelectedCell(cellId) {
     this.setState({selectedCell: cellId})
+  }
+
+  updateUserLetters(event, cellIndex) {
+    let newLetters = this.state.userLetters.slice();
+    newLetters[cellIndex] = event.key.toUpperCase();
+    this.setState({userLetters: newLetters});
   }
 
   componentDidMount() {
@@ -29,17 +45,21 @@ class CrosswordGrid extends React.Component {
 
   render() {
     let cells = [];
-    let grid = this.props.puzzle.grid
+    let grid = this.state.userLetters;
     let gridnums = this.props.puzzle.gridnums
     for (var i = 0; i < grid.length; i++) {
-      let cellId = i + 1;
-      let clickHandler = () => {this.changeSelectedCell(cellId)}
+      let cellIndex = i;
+      let clickHandler = () => {this.changeSelectedCell(cellIndex)}
+      let keyPressHandler = event => {
+        this.updateUserLetters(event, cellIndex)
+      }
       cells.push(
         <Cell
           key={i}
           number={gridnums[i]}
           letter={grid[i]}
-          selected={this.state.selectedCell === cellId}
+          selected={this.state.selectedCell === cellIndex}
+          onKeyPress={keyPressHandler}
           onClick={clickHandler}
            />
       )

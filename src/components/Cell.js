@@ -5,7 +5,7 @@ const Cell = props => {
   let classString = 'cell unselectable'
   if (props.letter === '.') {
     classString += ' shaded'
-    letter = null;
+    letter = '';
   }
   if (props.selected) {
     classString += ' selectedCell'
@@ -14,7 +14,11 @@ const Cell = props => {
   return(
     <div className={classString} onClick={props.onClick}>
       <div className="cell-number row">{number}</div>
-      <div className="cell-letter row">{letter}</div>
+      <input
+        type='text'
+        className="cell-letter row"
+        value={letter}
+        onKeyDownCapture={props.onKeyPress}/>
     </div>
   )
 }

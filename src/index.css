@@ -1,7 +1,6 @@
 body {
   margin: 0;
   padding: 0;
-
 }
 
 #crossword-container .row{
@@ -50,8 +49,17 @@ body {
 }
 
 .cell-letter {
+  padding: 0;
   padding-top: 20%;
-  margin-bottom: -100px;
+  margin: 0px 0px -100px 0px;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-color: inherit;
+  box-shadow: none;
+  font-size: inherit;
+  transition: none;
+  text-align: center;
 }
 
 .unselectable {
@@ -62,8 +70,15 @@ body {
   user-select: none;
 }
 
-.selectedCell {
-  background-color: rgba(0, 60, 255, 0.3);
+.cell-letter:focus {
+  outline: none;
+  background-color: lightblue;
+  border: none;
+  box-shadow: none;
+  transition: none;
+  outline-offset: 0px;
+  color: transparent;
+  text-shadow: 0 0 0 black;
 }
 
 
