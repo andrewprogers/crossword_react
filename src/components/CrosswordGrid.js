@@ -13,7 +13,6 @@ class CrosswordGrid extends React.Component {
   }
 
   changeSelectedCell(cellId) {
-    debugger;
     this.setState({selectedCell: cellId})
   }
 
@@ -33,13 +32,15 @@ class CrosswordGrid extends React.Component {
     let grid = this.props.puzzle.grid
     let gridnums = this.props.puzzle.gridnums
     for (var i = 0; i < grid.length; i++) {
-
+      let cellId = i + 1;
+      let clickHandler = () => {this.changeSelectedCell(cellId)}
       cells.push(
         <Cell
           key={i}
           number={gridnums[i]}
           letter={grid[i]}
-          selected={this.state.selectedCell === i + 1}
+          selected={this.state.selectedCell === cellId}
+          onClick={clickHandler}
            />
       )
     }

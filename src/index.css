@@ -1,8 +1,14 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+
 }
+
+#crossword-container .row{
+  margin-left: 0;
+  margin-right: 0;
+}
+
 
 .scale-container {
   position: relative;
@@ -18,10 +24,11 @@ body {
   height: 100%;
   display: flex;
   flex-wrap: wrap;
+  line-height: 1;
 }
 
 #grid-container .cell {
-  border: 1px solid black;
+  border: 1px solid #555;
   width: 10%;
   box-sizing: border-box;
   font-size: 24px;
@@ -43,7 +50,7 @@ body {
 }
 
 .cell-letter {
-  padding-top: 15%;
+  padding-top: 20%;
   margin-bottom: -100px;
 }
 
@@ -57,4 +64,22 @@ body {
 
 .selectedCell {
   background-color: rgba(0, 60, 255, 0.3);
+}
+
+
+/*-------------*/
+.clues {
+  -moz-column-count: 2;
+  -webkit-column-count: 2;
+  column-count: 2;
+
+  font-size: 0.9em;
+}
+
+.clues ul {
+  margin-left: 0;
+}
+
+.clues li {
+  list-style: none;
 }
