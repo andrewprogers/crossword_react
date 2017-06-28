@@ -14,24 +14,16 @@ class CrosswordGrid extends React.Component {
     }
 
     this.state ={
-      selectedCell: 0,
       userLetters: emptyLetters
     }
 
-    this.changeSelectedCell = this.changeSelectedCell.bind(this);
     this.updateUserLetters = this.updateUserLetters.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
-  changeSelectedCell(cellId) {
-    if (this.props.puzzle.grid[cellId] !== '.') {
-      this.setState({selectedCell: cellId})
-    }
-  }
-
   updateUserLetters(letter) {
     let newLetters = this.state.userLetters.slice();
-    newLetters[this.state.selectedCell] = letter.toUpperCase();
+    newLetters[this.props.selectedCell] = letter.toUpperCase();
     this.setState({userLetters: newLetters});
   }
 
@@ -60,13 +52,13 @@ class CrosswordGrid extends React.Component {
     let puzzleGrid = this.props.puzzle.grid;
     let cells = this.state.userLetters.map((letter, index) => {
       let cellLetter = (puzzleGrid[index] === '.') ? '.' : letter;
-      let clickHandler = () => {this.changeSelectedCell(index)}
+      let clickHandler = () => {this.props.onCellChange(index)}
       return(
         <Cell
           key={index}
           number={gridnums[index]}
           letter={cellLetter}
-          selected={this.state.selectedCell === index}
+          selected={this.props.selectedCell === index}
           onKeyDown={this.handleKeyDown}
           onClick={clickHandler}
            />
