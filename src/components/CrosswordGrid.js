@@ -34,7 +34,9 @@ class CrosswordGrid extends React.Component {
 
   createCells() {
     let gridnums = this.props.puzzle.gridnums;
+    let puzzleGrid = this.props.puzzle.grid;
     let cells = this.state.userLetters.map((letter, index) => {
+      let cellLetter = (puzzleGrid[index] === '.') ? '.' : letter;
       let clickHandler = () => {this.changeSelectedCell(index)}
       let keyPressHandler = event => {
         this.updateUserLetters(event, index)
@@ -43,13 +45,13 @@ class CrosswordGrid extends React.Component {
         <Cell
           key={index}
           number={gridnums[index]}
-          letter={letter}
+          letter={cellLetter}
           selected={this.state.selectedCell === index}
           onKeyPress={keyPressHandler}
           onClick={clickHandler}
            />
        )
-    })
+    }, this)
     return cells;
   }
 
