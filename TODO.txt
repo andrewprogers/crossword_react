@@ -1,4 +1,4 @@
--allow clueHighlighting
+x-allow clueHighlighting
   x-refactor selectedCell to Crossword container state
   x-refactor clues container to const
   x-refactor clues to const
@@ -7,4 +7,18 @@
   x-allow across / down rotation from cell clicks
   x-allow across / down selection from clicking on clues
 
+-remove all state to top level object
+-extract methods to modules
+  -unit tests
+  -refactor into smaller methods
+
+-highlight other cells in clue
 -make all text unselectable
+-change colors to something more attractive
+-move selected cell with arrow keys
+  -skip black cells
+  -
+-moves selected cell after typing
+
+
+-global state with redux?

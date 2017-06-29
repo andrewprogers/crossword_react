@@ -5,18 +5,25 @@ import CluesContainer from './CluesContainer';
 class CrosswordContainer extends React.Component {
   constructor(props) {
     super(props);
+
+    // Placeholder to be removed in the future
+    let size = this.props.initialPuzzle.size.rows;
+
     this.state = {
       puzzle: this.props.initialPuzzle,
-      grid: this.parseGrid(this.props.initialPuzzle.grid),
+      grid: this.parseArrayToGrid(this.props.initialPuzzle.grid),
       selectedCellRow: 0,
       selectedCellColumn: 0,
-      clueDirection: "across"
+      clueDirection: "across",
+      userLetters: this.generateEmptyGrid(size)
     }
     this.updateSelectedCell = this.updateSelectedCell.bind(this);
     this.changeClueDirection = this.changeClueDirection.bind(this);
+    this.updateUserLetters = this.updateUserLetters.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
-  parseGrid(puzzleArray) {
+  parseArrayToGrid(puzzleArray) {
     let size = Math.sqrt(puzzleArray.length)
     let newGrid = []
     for (var i = 0; i < size; i++) {
@@ -25,6 +32,49 @@ class CrosswordContainer extends React.Component {
     }
     return newGrid;
   }
+
+  generateEmptyGrid(size) {
+    let emptyLetters = []
+    for (var r = 0; r < size ; r++) {
+      let row = [];
+      for (var c = 0; c < size; c++) {
+        row.push('')
+      }
+      emptyLetters.push(row);
+    }
+    return emptyLetters;
+  }
+
+  updateUserLetters(letter) {
+    let old = this.state.userLetters
+    let newLetters = [];
+    for (var i = 0; i < old.length; i++) {
+      newLetters.push(old[i].slice())
+    }
+    newLetters[this.state.selectedCellRow][this.state.selectedCellColumn] = letter.toUpperCase();
+    this.setState({userLetters: newLetters});
+  }
+
+  handleKeyDown(event) {
+    let key = event.key
+    if (key.match(/[a-z]/) && key.length === 1){
+      this.updateUserLetters(key)
+    } else {
+      switch (key) {
+        case 'Backspace':
+          this.updateUserLetters('');
+          break;
+        case 'ArrowUp':
+        case 'ArrowDown':
+        case 'ArrowLeft':
+        case 'ArrowRight':
+          console.log(key);
+          break;
+        default:
+      }
+    }
+  }
+
 
   updateSelectedCell(row, column) {
     this.setState({
@@ -78,7 +128,9 @@ class CrosswordContainer extends React.Component {
             selectedCellColumn={this.state.selectedCellColumn}
             clueDirection={this.state.clueDirection}
             onCellChange={this.updateSelectedCell}
-            changeClueDirection={this.changeClueDirection} />
+            changeClueDirection={this.changeClueDirection}
+            userLetters={this.state.userLetters}
+            handleKeyDown={this.handleKeyDown} />
         </div>
         <div className='small-12 large-6 columns'>
           <CluesContainer
