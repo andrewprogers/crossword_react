@@ -13,7 +13,7 @@ class CrosswordContainer extends React.Component {
       clueDirection: "across"
     }
     this.updateSelectedCell = this.updateSelectedCell.bind(this);
-    //this.changeClueDirection = this.changeClueDirection.bind(this);
+    this.changeClueDirection = this.changeClueDirection.bind(this);
   }
 
   parseGrid(puzzleArray) {
@@ -31,6 +31,11 @@ class CrosswordContainer extends React.Component {
       selectedCellRow: row,
       selectedCellColumn: column
     })
+  }
+
+  changeClueDirection() {
+    let newDirection = (this.state.clueDirection === 'across') ? 'down' : 'across'
+    this.setState({clueDirection: newDirection})
   }
 
   createGridNums() {
@@ -70,7 +75,8 @@ class CrosswordContainer extends React.Component {
             selectedCellRow={this.state.selectedCellRow}
             selectedCellColumn={this.state.selectedCellColumn}
             clueDirection={this.state.clueDirection}
-            onCellChange={this.updateSelectedCell} />
+            onCellChange={this.updateSelectedCell}
+            changeClueDirection={this.changeClueDirection} />
         </div>
         <div className='small-12 large-6 columns'>
           <CluesContainer

@@ -59,7 +59,13 @@ class CrosswordGrid extends React.Component {
     let cells = this.state.userLetters.map((row, rIndex) => {
       let cellRow = row.map((letter, cIndex) => {
         let cellLetter = (puzzleGrid[rIndex][cIndex] === '.') ? '.' : letter;
-        let clickHandler = () => {this.props.onCellChange(rIndex, cIndex)};
+        let clickHandler = () => {
+          if ((this.props.selectedCellRow === rIndex) && (this.props.selectedCellColumn === cIndex)){
+            this.props.changeClueDirection();
+          } else {
+            this.props.onCellChange(rIndex, cIndex)
+          }
+        };
         let selected = ((this.props.selectedCellRow === rIndex) && (this.props.selectedCellColumn === cIndex))
         return(
           <Cell
