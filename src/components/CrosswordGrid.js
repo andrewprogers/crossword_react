@@ -25,7 +25,6 @@ class CrosswordGrid extends React.Component {
   }
 
   updateUserLetters(letter) {
-    debugger;
     let old = this.state.userLetters
     let newLetters = [];
     for (var i = 0; i < old.length; i++) {
@@ -55,33 +54,7 @@ class CrosswordGrid extends React.Component {
     }
   }
 
-  createGridNums() {
-    let grid = this.props.grid;
-    let gridNums = [];
-    let currentNumber = 1;
-
-    for (var r = 0; r < grid.length; r++) {
-      let rowNums = [];
-      for (var c = 0; c < grid.length; c++) {
-        if (grid[r][c] === '.') {
-          rowNums.push(0);
-        } else if ((r === 0) || (c === 0)) {
-          rowNums.push(currentNumber);
-          currentNumber += 1;
-        } else if ( (grid[r-1][c] !== '.') && (grid[r][c-1] !== '.') ) {
-          rowNums.push(0);
-        } else {
-          rowNums.push(currentNumber);
-          currentNumber += 1;
-        }
-      }
-      gridNums.push(rowNums);
-    }
-    return gridNums;
-  }
-
   createCells() {
-    let gridnums = this.createGridNums()
     let puzzleGrid = this.props.grid;
     let cells = this.state.userLetters.map((row, rIndex) => {
       let cellRow = row.map((letter, cIndex) => {
@@ -91,7 +64,7 @@ class CrosswordGrid extends React.Component {
         return(
           <Cell
             key={rIndex + " " + cIndex}
-            number={gridnums[rIndex][cIndex]}
+            number={this.props.gridNums[rIndex][cIndex]}
             letter={cellLetter}
             selected={selected}
             onKeyDown={this.handleKeyDown}

@@ -8,6 +8,19 @@ const Clues = props => {
 
   let type = props.type
   let label = type.charAt(0).toUpperCase() + type.slice(1);
+
+  if (props.clueDirection === 'across') {
+    let col = props.selectedCellColumn;
+    while (col > 0 && props.grid[props.selectedCellRow][col -1] !== '.') {
+      col -= 1;
+    }
+  } else {
+    let row = props.selectedCellRow;
+    while (row > 0 && props.grid[row - 1][props.selectedCellColumn] !== '.') {
+      row -= 1;
+    }
+  }
+
   let acrossNumbers = props.clues.map((clue) => {
     let num = clue.match(/^(\d*)\./)[1];
     return parseInt(num);
@@ -33,6 +46,9 @@ const Clues = props => {
 
 export default Clues;
 
-// type
-// clues
-// clueDirection
+// type='across'
+// clues={props.clues.across}
+// gridNums={props.gridNums}
+// clueDirection={props.clueDirection}
+// selectedCellRow={props.selectedCellRow}
+// selectedCellColumn={props.selectedCellColumn}
