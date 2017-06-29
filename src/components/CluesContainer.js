@@ -8,11 +8,13 @@ const CluesContainer = props => {
         type='across'
         clues={props.clues.across}
         clueDirection={props.clueDirection}
+        selectedCell={props.selectedCell}
         />
       <Clues
         type='down'
         clues={props.clues.down}
         clueDirection={props.clueDirection}
+        selectedCell={props.selectedCell}
         />
     </div>
   )

@@ -7,20 +7,30 @@ class CrosswordContainer extends React.Component {
     super(props);
     this.state = {
       puzzle: this.props.initialPuzzle,
-      selectedCell: 0,
+      grid: this.parseGrid(this.props.initialPuzzle.grid),
+      selectedCellRow: 0,
+      selectedCellColumn: 0,
       clueDirection: "across"
     }
-    this.replacePuzzle = this.replacePuzzle.bind(this);
     this.updateSelectedCell = this.updateSelectedCell.bind(this);
     //this.changeClueDirection = this.changeClueDirection.bind(this);
   }
 
-  replacePuzzle(newPuzzle) {
-    this.setState({puzzle: newPuzzle})
+  parseGrid(puzzleArray) {
+    let size = Math.sqrt(puzzleArray.length)
+    let newGrid = []
+    for (var i = 0; i < size; i++) {
+      let start = i * size
+      newGrid.push(puzzleArray.slice(start, start + size))
+    }
+    return newGrid;
   }
 
-  updateSelectedCell(cellIndex) {
-    this.setState({selectedCell: cellIndex})
+  updateSelectedCell(row, column) {
+    this.setState({
+      selectedCellRow: row,
+      selectedCellColumn: column
+    })
   }
 
   render() {
@@ -28,15 +38,18 @@ class CrosswordContainer extends React.Component {
       <div id='crossword-container' className="row">
         <div className='small-12 large-6 columns'>
           <CrosswordGrid
+            grid={this.state.grid}
             puzzle={this.state.puzzle}
-            selectedCell={this.state.selectedCell}
+            selectedCellRow={this.state.selectedCellRow}
+            selectedCellColumn={this.state.selectedCellColumn}
             clueDirection={this.state.clueDirection}
             onCellChange={this.updateSelectedCell} />
         </div>
         <div className='small-12 large-6 columns'>
           <CluesContainer
             clues={this.state.puzzle.clues}
-            selectedCell={this.state.selectedCell}
+            selectedCellRow={this.state.selectedCellRow}
+            selectedCellColumn={this.state.selectedCellColumn}
             clueDirection={this.state.clueDirection} />
         </div>
       </div>

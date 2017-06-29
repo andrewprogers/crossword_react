@@ -6,11 +6,14 @@ class CrosswordGrid extends React.Component {
   constructor(props) {
     super(props);
 
-    this.size = this.props.puzzle.size.cols;
+    this.size = this.props.grid.length;
     let emptyLetters = []
-    let totalLength = this.size * this.size;
-    for (var i = 0; i < totalLength ; i++) {
-      emptyLetters.push('')
+    for (var r = 0; r < this.size ; r++) {
+      let row = [];
+      for (var c = 0; c < this.size; c++) {
+        row.push('')
+      }
+      emptyLetters.push(row);
     }
 
     this.state ={
@@ -22,8 +25,13 @@ class CrosswordGrid extends React.Component {
   }
 
   updateUserLetters(letter) {
-    let newLetters = this.state.userLetters.slice();
-    newLetters[this.props.selectedCell] = letter.toUpperCase();
+    debugger;
+    let old = this.state.userLetters
+    let newLetters = [];
+    for (var i = 0; i < old.length; i++) {
+      newLetters.push(old[i].slice())
+    }
+    newLetters[this.props.selectedCellRow][this.props.selectedCellColumn] = letter.toUpperCase();
     this.setState({userLetters: newLetters});
   }
 
@@ -47,22 +55,51 @@ class CrosswordGrid extends React.Component {
     }
   }
 
+  createGridNums() {
+    let grid = this.props.grid;
+    let gridNums = [];
+    let currentNumber = 1;
+
+    for (var r = 0; r < grid.length; r++) {
+      let rowNums = [];
+      for (var c = 0; c < grid.length; c++) {
+        if (grid[r][c] === '.') {
+          rowNums.push(0);
+        } else if ((r === 0) || (c === 0)) {
+          rowNums.push(currentNumber);
+          currentNumber += 1;
+        } else if ( (grid[r-1][c] !== '.') && (grid[r][c-1] !== '.') ) {
+          rowNums.push(0);
+        } else {
+          rowNums.push(currentNumber);
+          currentNumber += 1;
+        }
+      }
+      gridNums.push(rowNums);
+    }
+    return gridNums;
+  }
+
   createCells() {
-    let gridnums = this.props.puzzle.gridnums;
-    let puzzleGrid = this.props.puzzle.grid;
-    let cells = this.state.userLetters.map((letter, index) => {
-      let cellLetter = (puzzleGrid[index] === '.') ? '.' : letter;
-      let clickHandler = () => {this.props.onCellChange(index)}
-      return(
-        <Cell
-          key={index}
-          number={gridnums[index]}
-          letter={cellLetter}
-          selected={this.props.selectedCell === index}
-          onKeyDown={this.handleKeyDown}
-          onClick={clickHandler}
-           />
-       )
+    let gridnums = this.createGridNums()
+    let puzzleGrid = this.props.grid;
+    let cells = this.state.userLetters.map((row, rIndex) => {
+      let cellRow = row.map((letter, cIndex) => {
+        let cellLetter = (puzzleGrid[rIndex][cIndex] === '.') ? '.' : letter;
+        let clickHandler = () => {this.props.onCellChange(rIndex, cIndex)};
+        let selected = ((this.props.selectedCellRow === rIndex) && (this.props.selectedCellColumn === cIndex))
+        return(
+          <Cell
+            key={rIndex + " " + cIndex}
+            number={gridnums[rIndex][cIndex]}
+            letter={cellLetter}
+            selected={selected}
+            onKeyDown={this.handleKeyDown}
+            onClick={clickHandler}
+             />
+         )
+      }, this)
+      return cellRow;
     }, this)
     return cells;
   }
@@ -80,7 +117,6 @@ class CrosswordGrid extends React.Component {
 
   render() {
     let cells = this.createCells();
-
     return(
       <div className="scale-container">
         <div id="grid-container">
