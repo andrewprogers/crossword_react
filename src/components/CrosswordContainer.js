@@ -10,7 +10,7 @@ class CrosswordContainer extends React.Component {
       grid: this.parseGrid(this.props.initialPuzzle.grid),
       selectedCellRow: 0,
       selectedCellColumn: 0,
-      clueDirection: "down"
+      clueDirection: "across"
     }
     this.updateSelectedCell = this.updateSelectedCell.bind(this);
     //this.changeClueDirection = this.changeClueDirection.bind(this);

@@ -1,6 +1,22 @@
 import React from 'react';
 
 const Clues = props => {
+  let getSelectedClueNum = () => {
+    if (props.clueDirection === 'across') {
+      let col = props.selectedCellColumn;
+      while (col > 0 && props.grid[props.selectedCellRow][col -1] !== '.') {
+        col -= 1;
+      }
+      return props.gridNums[props.selectedCellRow][col];
+    } else {
+      let row = props.selectedCellRow;
+      while (row > 0 && props.grid[row - 1][props.selectedCellColumn] !== '.') {
+        row -= 1;
+      }
+      return props.gridNums[row][props.selectedCellColumn];
+    }
+  }
+
   let classString = 'clue-box';
   if (props.clueDirection === props.type) {
     classString += ' selected-clues';
@@ -8,29 +24,27 @@ const Clues = props => {
 
   let type = props.type
   let label = type.charAt(0).toUpperCase() + type.slice(1);
+  let clueObj = {}
+  props.clues.forEach(clue => {
+    let num = clue.match(/^(\d*)\./)[1];
+    clueObj[num] = clue;
+  })
 
-  if (props.clueDirection === 'across') {
-    let col = props.selectedCellColumn;
-    while (col > 0 && props.grid[props.selectedCellRow][col -1] !== '.') {
-      col -= 1;
-    }
-  } else {
-    let row = props.selectedCellRow;
-    while (row > 0 && props.grid[row - 1][props.selectedCellColumn] !== '.') {
-      row -= 1;
+  let clues = []
+  let selected = "" + getSelectedClueNum();
+  for (var clueNum in clueObj) {
+    if (clueObj.hasOwnProperty(clueNum)) {
+      debugger;
+      let className = (selected === clueNum) ? "selected" : ""
+      let clue = clueObj[clueNum];
+      clues.push(
+        <li
+          key={clue}
+          className={className}>{clue}</li>
+      )
     }
   }
 
-  let acrossNumbers = props.clues.map((clue) => {
-    let num = clue.match(/^(\d*)\./)[1];
-    return parseInt(num);
-  })
-
-  let clues = props.clues.map(clue => {
-    return(
-      <li key={clue}>{clue}</li>
-    )
-  })
 
   return(
     <div className={classString}>

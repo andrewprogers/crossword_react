@@ -102,6 +102,10 @@ body {
   border-width: 3px;
 }
 
+.selected-clues .selected {
+  background-color: yellow;
+}
+
 .clues {
   -moz-column-count: 2;
   -webkit-column-count: 2;
