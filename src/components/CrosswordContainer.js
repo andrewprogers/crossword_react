@@ -79,7 +79,8 @@ class CrosswordContainer extends React.Component {
             gridNums={gridNums}
             selectedCellRow={this.state.selectedCellRow}
             selectedCellColumn={this.state.selectedCellColumn}
-            clueDirection={this.state.clueDirection} />
+            clueDirection={this.state.clueDirection}
+            onClueClick={this.updateSelectedCell} />
         </div>
       </div>
 
