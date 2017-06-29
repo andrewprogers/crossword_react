@@ -7,7 +7,7 @@ x-allow clueHighlighting
   x-allow across / down rotation from cell clicks
   x-allow across / down selection from clicking on clues
 
--remove all state to top level object
+x-remove all state to top level object
 -extract methods to modules
   -unit tests
   -refactor into smaller methods
