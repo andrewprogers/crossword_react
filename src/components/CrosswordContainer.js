@@ -1,6 +1,7 @@
 import React from 'react';
-import CrosswordGrid from './CrosswordGrid'
+import CrosswordGrid from './CrosswordGrid';
 import CluesContainer from './CluesContainer';
+import Crossword from '../modules/Crossword'
 
 class CrosswordContainer extends React.Component {
   constructor(props) {
@@ -15,7 +16,8 @@ class CrosswordContainer extends React.Component {
       selectedCellRow: 0,
       selectedCellColumn: 0,
       clueDirection: "across",
-      userLetters: this.generateEmptyGrid(size)
+      userLetters: this.generateEmptyGrid(size),
+      c: new Crossword(this.props.initialPuzzle.grid,this.props.initialPuzzle.clues)
     }
     this.updateSelectedCell = this.updateSelectedCell.bind(this);
     this.changeClueDirection = this.changeClueDirection.bind(this);
@@ -75,7 +77,6 @@ class CrosswordContainer extends React.Component {
     }
   }
 
-
   updateSelectedCell(row, column) {
     this.setState({
       selectedCellRow: row,
@@ -116,6 +117,7 @@ class CrosswordContainer extends React.Component {
   }
 
   render() {
+    debugger;
     let gridNums = this.createGridNums();
 
     return(
@@ -148,5 +150,7 @@ class CrosswordContainer extends React.Component {
     )
   }
 }
+
+debugger;
 
 export default CrosswordContainer;
