@@ -45,6 +45,7 @@ const CluesContainer = props => {
         selectedCellRow={props.selectedCellRow}
         selectedCellColumn={props.selectedCellColumn}
         onClueClick={props.onClueClick}
+        changeClueDirection={props.changeClueDirection}
         />
       <Clues
         type='down'
@@ -55,6 +56,7 @@ const CluesContainer = props => {
         selectedCellRow={props.selectedCellRow}
         selectedCellColumn={props.selectedCellColumn}
         onClueClick={props.onClueClick}
+        changeClueDirection={props.changeClueDirection}
         />
     </div>
   )

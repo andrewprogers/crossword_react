@@ -37,7 +37,12 @@ const Clues = props => {
   let selected = clueCell.gridNum;
   let clues = props.clues.map(clueObj => {
     let className = (selected === clueObj.gridNum) ? "selected" : "";
-    let clickHandler = () => {props.onClueClick(clueObj.row, clueObj.column)}
+    let clickHandler = () => {
+      props.onClueClick(clueObj.row, clueObj.column)
+      if (props.clueDirection !== props.type) {
+        props.changeClueDirection(type)
+      }
+    }
     return(
       <li
         key={clueObj.text}

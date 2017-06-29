@@ -4,7 +4,7 @@
   x-refactor clues to const
   x-style selected Clues
   x-allow clue selection from clues
-  -allow across / down rotation from cell clicks
-  -allow across / down selection from clicking on clues
+  x-allow across / down rotation from cell clicks
+  x-allow across / down selection from clicking on clues
 
 -make all text unselectable

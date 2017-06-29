@@ -33,8 +33,10 @@ class CrosswordContainer extends React.Component {
     })
   }
 
-  changeClueDirection() {
-    let newDirection = (this.state.clueDirection === 'across') ? 'down' : 'across'
+  changeClueDirection(newDirection) {
+    if (newDirection === undefined) {
+      newDirection = (this.state.clueDirection === 'across') ? 'down' : 'across'
+    }
     this.setState({clueDirection: newDirection})
   }
 
@@ -86,7 +88,8 @@ class CrosswordContainer extends React.Component {
             selectedCellRow={this.state.selectedCellRow}
             selectedCellColumn={this.state.selectedCellColumn}
             clueDirection={this.state.clueDirection}
-            onClueClick={this.updateSelectedCell} />
+            onClueClick={this.updateSelectedCell}
+            changeClueDirection={this.changeClueDirection} />
         </div>
       </div>
 
