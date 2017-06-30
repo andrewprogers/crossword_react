@@ -22,7 +22,7 @@ const Cell = props => {
         type='text'
         className="cell-letter row"
         value={letter}
-        onKeyDownCapture={props.onKeyDown}/>
+        onKeyDownCapture={props.on.handleKeyDown}/>
     </div>
   )
 }

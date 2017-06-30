@@ -8,43 +8,24 @@ class CrosswordContainer extends React.Component {
     super(props);
 
     // Placeholder to be removed in the future
-    let size = this.props.initialPuzzle.size.rows;
+    let puzzle = this.props.initialPuzzle
+    let size = puzzle.size.rows;
 
     this.state = {
-      puzzle: this.props.initialPuzzle,
-      grid: this.parseArrayToGrid(this.props.initialPuzzle.grid),
+      grid: Crossword.parseArrayToGrid(puzzle.grid),
+      clues: puzzle.clues,
+      userLetters: Crossword.generateEmptyGrid(size),
       selectedCellRow: 0,
       selectedCellColumn: 0,
-      clueDirection: "across",
-      userLetters: this.generateEmptyGrid(size),
-      c: new Crossword(this.props.initialPuzzle.grid,this.props.initialPuzzle.clues)
+      clueDirection: "across"
     }
-    this.updateSelectedCell = this.updateSelectedCell.bind(this);
-    this.changeClueDirection = this.changeClueDirection.bind(this);
-    this.updateUserLetters = this.updateUserLetters.bind(this);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-  }
 
-  parseArrayToGrid(puzzleArray) {
-    let size = Math.sqrt(puzzleArray.length)
-    let newGrid = []
-    for (var i = 0; i < size; i++) {
-      let start = i * size
-      newGrid.push(puzzleArray.slice(start, start + size))
+    this.on = {
+      updateSelectedCell: this.updateSelectedCell.bind(this),
+      changeClueDirection: this.changeClueDirection.bind(this),
+      updateUserLetters: this.updateUserLetters.bind(this),
+      handleKeyDown: this.handleKeyDown.bind(this)
     }
-    return newGrid;
-  }
-
-  generateEmptyGrid(size) {
-    let emptyLetters = []
-    for (var r = 0; r < size ; r++) {
-      let row = [];
-      for (var c = 0; c < size; c++) {
-        row.push('')
-      }
-      emptyLetters.push(row);
-    }
-    return emptyLetters;
   }
 
   updateUserLetters(letter) {
@@ -91,66 +72,28 @@ class CrosswordContainer extends React.Component {
     this.setState({clueDirection: newDirection})
   }
 
-  createGridNums() {
-    let grid = this.state.grid;
-    let gridNums = [];
-    let currentNumber = 1;
-
-    for (var r = 0; r < grid.length; r++) {
-      let rowNums = [];
-      for (var c = 0; c < grid.length; c++) {
-        if (grid[r][c] === '.') {
-          rowNums.push(0);
-        } else if ((r === 0) || (c === 0)) {
-          rowNums.push(currentNumber);
-          currentNumber += 1;
-        } else if ( (grid[r-1][c] !== '.') && (grid[r][c-1] !== '.') ) {
-          rowNums.push(0);
-        } else {
-          rowNums.push(currentNumber);
-          currentNumber += 1;
-        }
-      }
-      gridNums.push(rowNums);
-    }
-    return gridNums;
-  }
-
   render() {
-    debugger;
-    let gridNums = this.createGridNums();
-
+    let crossword = new Crossword(this.state.grid, this.state.clues, this.state.userLetters);
     return(
       <div id='crossword-container' className="row">
         <div className='small-12 large-6 columns'>
           <CrosswordGrid
-            grid={this.state.grid}
-            gridNums={gridNums}
+            crossword={crossword}
             selectedCellRow={this.state.selectedCellRow}
             selectedCellColumn={this.state.selectedCellColumn}
-            clueDirection={this.state.clueDirection}
-            onCellChange={this.updateSelectedCell}
-            changeClueDirection={this.changeClueDirection}
-            userLetters={this.state.userLetters}
-            handleKeyDown={this.handleKeyDown} />
+            on={this.on} />
         </div>
         <div className='small-12 large-6 columns'>
           <CluesContainer
-            grid={this.state.grid}
-            clues={this.state.puzzle.clues}
-            gridNums={gridNums}
+            crossword={crossword}
             selectedCellRow={this.state.selectedCellRow}
             selectedCellColumn={this.state.selectedCellColumn}
             clueDirection={this.state.clueDirection}
-            onClueClick={this.updateSelectedCell}
-            changeClueDirection={this.changeClueDirection} />
+            on={this.on} />
         </div>
       </div>
-
     )
   }
 }
-
-debugger;
 
 export default CrosswordContainer;

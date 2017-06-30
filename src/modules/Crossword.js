@@ -1,34 +1,15 @@
 class Crossword {
-  constructor(gridArray, clues) {
-    if (Array.isArray(gridArray)) {
-      this.grid = this.parseArrayToGrid(gridArray);
-      this.clues = clues;
-    }
-  }
-
-  parseArrayToGrid(gridArray) {
-    let size = Math.sqrt(gridArray.length);
-    let newGrid = [];
-    for (var i = 0; i < size; i++) {
-      let start = i * size
-      newGrid.push(gridArray.slice(start, start + size))
-    }
-    return newGrid;
-  }
-
-  generateEmptyGrid(size) {
-    let emptyLetters = []
-    for (var r = 0; r < size ; r++) {
-      let row = [];
-      for (var c = 0; c < size; c++) {
-        row.push('')
-      }
-      emptyLetters.push(row);
-    }
-    return emptyLetters;
+  constructor(gridArray, clues, userLetters) {
+    this.grid = gridArray
+    this.clues = clues;
+    this.userLetters = userLetters;
   }
 
   getGridNums() {
+    if (this.gridNums !== undefined){
+      return this.gridNums
+    }
+
     let grid = this.grid
     let gridNums = [];
     let currentNumber = 1;
@@ -50,10 +31,15 @@ class Crossword {
       }
       gridNums.push(rowNums);
     }
+    this.gridNums = gridNums;
     return gridNums;
   }
 
   getAcrossClues() {
+    if (this.acrossClues !== undefined) {
+      return this.acrossClues
+    }
+
     let acrossClues = [];
     let acrossClueTextCopy = this.clues.across.slice();
     let gridNums = this.getGridNums()
@@ -76,10 +62,14 @@ class Crossword {
         }
       }
     }
+    this.acrossClues = acrossClues;
     return acrossClues;
   }
 
   getDownClues() {
+    if (this.downClues !== undefined) {
+      return this.downClues
+    }
     let downClues = [];
     let downClueTextCopy = this.clues.down.slice();
     let gridNums = this.getGridNums()
@@ -102,9 +92,53 @@ class Crossword {
         }
       }
     }
+    this.downClues = downClues;
     return downClues;
   }
 
+  getSelectedClueCell(direction, row, column) {
+    if (direction === 'across') {
+      while (column > 0 && this.grid[row][column - 1] !== '.') {
+        column -= 1;
+      }
+      return ({
+        row: row,
+        column: column,
+        gridNum: this.getGridNums()[row][column]
+      })
+    } else {
+      while (row > 0 && this.grid[row - 1][column] !== '.') {
+        row -= 1;
+      }
+      return ({
+        row: row,
+        column: column,
+        gridNum: this.getGridNums()[row][column]
+      })
+    }
+  }
 }
+
+Crossword.generateEmptyGrid = (size) => {
+    let emptyLetters = []
+    for (var r = 0; r < size ; r++) {
+      let row = [];
+      for (var c = 0; c < size; c++) {
+        row.push('')
+      }
+      emptyLetters.push(row);
+    }
+    return emptyLetters;
+  }
+
+Crossword.parseArrayToGrid = (gridArray) => {
+    let size = Math.sqrt(gridArray.length);
+    let newGrid = [];
+    for (var i = 0; i < size; i++) {
+      let start = i * size
+      newGrid.push(gridArray.slice(start, start + size))
+    }
+    return newGrid;
+  }
 
 export default Crossword;

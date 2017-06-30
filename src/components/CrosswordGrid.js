@@ -8,25 +8,25 @@ class CrosswordGrid extends React.Component {
   }
 
   createCells() {
-    let puzzleGrid = this.props.grid;
-    let cells = this.props.userLetters.map((row, rIndex) => {
+    let crossword = this.props.crossword
+    let cells = crossword.userLetters.map((row, rIndex) => {
       let cellRow = row.map((letter, cIndex) => {
-        let cellLetter = (puzzleGrid[rIndex][cIndex] === '.') ? '.' : letter;
+        let cellLetter = (crossword.grid[rIndex][cIndex] === '.') ? '.' : letter;
         let clickHandler = () => {
           if ((this.props.selectedCellRow === rIndex) && (this.props.selectedCellColumn === cIndex)){
-            this.props.changeClueDirection();
+            this.props.on.changeClueDirection();
           } else {
-            this.props.onCellChange(rIndex, cIndex)
+            this.props.on.updateSelectedCell(rIndex, cIndex)
           }
         };
         let selected = ((this.props.selectedCellRow === rIndex) && (this.props.selectedCellColumn === cIndex))
         return(
           <Cell
             key={rIndex + " " + cIndex}
-            number={this.props.gridNums[rIndex][cIndex]}
+            number={crossword.getGridNums()[rIndex][cIndex]}
             letter={cellLetter}
             selected={selected}
-            onKeyDown={this.props.handleKeyDown}
+            on={this.props.on}
             onClick={clickHandler}
              />
          )
@@ -38,12 +38,12 @@ class CrosswordGrid extends React.Component {
 
   componentDidMount() {
     let gridElement = document.getElementById('grid-container');
-    let cellFontUpdater = createRelativeFontUpdater(gridElement, '#grid-container .cell', 1.3 * this.props.grid.length);
+    let cellFontUpdater = createRelativeFontUpdater(gridElement, '#grid-container .cell', 1.3 * this.props.crossword.grid.length);
     cellFontUpdater();
     window.addEventListener('resize', cellFontUpdater);
 
     let updateSheet = getCustomSheetUpdater();
-    let pctWidth = (100 / this.props.grid.length);
+    let pctWidth = (100 / this.props.crossword.grid.length);
     updateSheet(`#grid-container .cell { width: ${pctWidth}%;}`);
   }
 
