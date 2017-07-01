@@ -85,37 +85,45 @@ body {
 }
 
 .selectedClue {
-  background-color: pink;
+  background-color: #FFD658;
 }
 
 .selectedCell.selectedClue {
-  background-color: lightblue;
+  background-color: #FFA985;
 }
 
 
 /*-------------*/
 .clue-box {
-  border: 1px solid #555;
+  border: 3px solid #AAA;
+  color: #555;
   border-radius: 10px;
-  padding: 2%;
+  padding: 1%;
   margin-bottom: 10px;
+  background-color: #FFEAA8
 }
 
 .selected-clues {
-  background-color: lightblue;
-  border-width: 3px;
+  background-color: #FFEAA8;
+  border-color: #F4B905;
+  color: black;
 }
 
 .selected-clues .selected {
-  background-color: yellow;
+  background-color: #FFC2A8;
+  border-radius: 7px;
+  border: 0px solid #FFD658;
 }
 
 .clues {
   -moz-column-count: 2;
   -webkit-column-count: 2;
   column-count: 2;
-
   font-size: 0.9em;
+}
+
+.clue-box h3 {
+  padding-left: 5px;
 }
 
 .clues ul {
@@ -124,4 +132,5 @@ body {
 
 .clues li {
   list-style: none;
+  padding-left: 5px;
 }
