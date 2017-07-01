@@ -39,6 +39,8 @@ class CrosswordContainer extends React.Component {
   }
 
   handleKeyDown(event) {
+    let crossword = new Crossword(this.state.grid, this.state.clues, this.state.userLetters);
+    let next;
     let key = event.key
     if (key.match(/[a-z]/) && key.length === 1){
       this.updateUserLetters(key)
@@ -48,10 +50,20 @@ class CrosswordContainer extends React.Component {
           this.updateUserLetters('');
           break;
         case 'ArrowUp':
+          next = crossword.nextCell('up', this.state.selectedCellRow, this.state.selectedCellColumn)
+          this.updateSelectedCell(next.row, next.column);
+          break;
         case 'ArrowDown':
+          next = crossword.nextCell('down', this.state.selectedCellRow, this.state.selectedCellColumn)
+          this.updateSelectedCell(next.row, next.column);
+          break;
         case 'ArrowLeft':
+          next = crossword.nextCell('left', this.state.selectedCellRow, this.state.selectedCellColumn)
+          this.updateSelectedCell(next.row, next.column);
+          break;
         case 'ArrowRight':
-          console.log(key);
+          next = crossword.nextCell('right', this.state.selectedCellRow, this.state.selectedCellColumn)
+          this.updateSelectedCell(next.row, next.column);
           break;
         default:
       }

@@ -132,6 +132,67 @@ class Crossword {
       })
     }
   }
+
+  nextCell(direction, startRow, startCol) {
+    let row = startRow, col = startCol;
+    let nextRow, nextCol;
+    let length = this.grid.length;
+    // find the next cell in the given direction which is not a black square
+    let rowChange = 0, colChange = 0;
+    switch (direction) {
+      case 'right':
+        colChange = 1;
+        break;
+      case 'left':
+        colChange = -1;
+        break;
+      case 'up':
+        rowChange = -1;
+        break;
+      case 'down':
+        rowChange = 1;
+        break;
+      default:
+        return undefined;
+    }
+    
+    while (true) {
+      if ((row === length -1 && col === length -1) && (colChange === 1)){
+        nextRow = 0;
+        nextCol = 0;
+      } else if ((row === 0 && col === 0) && (colChange === -1)) {
+        nextRow = length - 1;
+        nextCol = length - 1;
+      } else {
+        nextCol = (col + colChange + length) % length;
+        nextRow = row + rowChange;
+        if (col + colChange === length){
+          nextRow += 1 ;
+        } else if (col + colChange === -1) {
+          nextRow -= 1 ;
+        }
+        if (nextRow === length) {
+          nextRow -= 1;
+        } else if(nextRow === -1) {
+          nextRow = 0;
+        }
+      }
+
+      row = nextRow;
+      col = nextCol;
+      if (this.grid[row][col] !== '.') {
+        return {
+          row: row,
+          column: col
+        }
+      } else if ((row === 0 || row === length - 1) && (rowChange !== 0)){
+        return {
+          row: startRow,
+          column: startCol
+        }
+      }
+    }
+  }
 }
 
 Crossword.generateEmptyGrid = (size) => {
