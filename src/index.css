@@ -100,7 +100,8 @@ body {
   border-radius: 10px;
   padding: 1%;
   margin-bottom: 10px;
-  background-color: #FFEAA8
+  background-color: #FFEAA8;
+  cursor: default;
 }
 
 .selected-clues {

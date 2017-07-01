@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Clues = props => {
-  let classString = 'clue-box';
+  let classString = 'clue-box unselectable';
   if (props.clueDirection === props.type) {
     classString += ' selected-clues';
   }
