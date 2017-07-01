@@ -9,7 +9,7 @@ const Clues = props => {
   let type = props.type
   let label = type.charAt(0).toUpperCase() + type.slice(1);
 
-  let clueCell = props.crossword.getSelectedClueCell(props.clueDirection, props.selectedCellRow, props.selectedCellColumn);
+  let clueCell = props.crossword.getSelectedClue(props.clueDirection, props.selectedCellRow, props.selectedCellColumn);
   let selected = clueCell.gridNum;
   let clues = props.clues.map(clueObj => {
     let className = (selected === clueObj.gridNum) ? "selected" : "";

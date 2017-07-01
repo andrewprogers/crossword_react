@@ -81,6 +81,7 @@ class CrosswordContainer extends React.Component {
             crossword={crossword}
             selectedCellRow={this.state.selectedCellRow}
             selectedCellColumn={this.state.selectedCellColumn}
+            clueDirection={this.state.clueDirection}
             on={this.on} />
         </div>
         <div className='small-12 large-6 columns'>

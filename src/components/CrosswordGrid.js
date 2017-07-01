@@ -8,26 +8,20 @@ class CrosswordGrid extends React.Component {
   }
 
   createCells() {
-    let crossword = this.props.crossword
-    let cells = crossword.userLetters.map((row, rIndex) => {
+    let selectedClue = this.props.crossword.getSelectedClue(this.props.clueDirection, this.props.selectedCellRow, this.props.selectedCellColumn)
+    let cells = this.props.crossword.userLetters.map((row, rIndex) => {
       let cellRow = row.map((letter, cIndex) => {
-        let cellLetter = (crossword.grid[rIndex][cIndex] === '.') ? '.' : letter;
-        let clickHandler = () => {
-          if ((this.props.selectedCellRow === rIndex) && (this.props.selectedCellColumn === cIndex)){
-            this.props.on.changeClueDirection();
-          } else {
-            this.props.on.updateSelectedCell(rIndex, cIndex)
-          }
-        };
         let selected = ((this.props.selectedCellRow === rIndex) && (this.props.selectedCellColumn === cIndex))
         return(
           <Cell
             key={rIndex + " " + cIndex}
-            number={crossword.getGridNums()[rIndex][cIndex]}
-            letter={cellLetter}
-            selected={selected}
+            crossword={this.props.crossword}
+            row={rIndex}
+            column={cIndex}
+            selectedCellRow={this.props.selectedCellRow}
+            selectedCellColumn={this.props.selectedCellColumn}
+            selectedClue={selectedClue}
             on={this.props.on}
-            onClick={clickHandler}
              />
          )
       }, this)

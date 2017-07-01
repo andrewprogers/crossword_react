@@ -96,24 +96,39 @@ class Crossword {
     return downClues;
   }
 
-  getSelectedClueCell(direction, row, column) {
+  getSelectedClue(direction, row, column) {
+    let lastIndex = this.grid.length - 1
     if (direction === 'across') {
-      while (column > 0 && this.grid[row][column - 1] !== '.') {
-        column -= 1;
+      let columnStart = column
+      while (columnStart > 0 && this.grid[row][columnStart - 1] !== '.') {
+        columnStart -= 1;
+      }
+      let columnEnd = column
+      while (columnEnd < lastIndex && this.grid[row][columnEnd + 1] !== '.') {
+        columnEnd += 1;
       }
       return ({
-        row: row,
-        column: column,
-        gridNum: this.getGridNums()[row][column]
+        rowStart: row,
+        rowEnd: row,
+        columnStart: columnStart,
+        columnEnd: columnEnd,
+        gridNum: this.getGridNums()[row][columnStart]
       })
     } else {
-      while (row > 0 && this.grid[row - 1][column] !== '.') {
-        row -= 1;
+      let rowStart = row;
+      while (rowStart > 0 && this.grid[rowStart - 1][column] !== '.') {
+        rowStart -= 1;
+      }
+      let rowEnd = row;
+      while (rowEnd < lastIndex && this.grid[rowEnd + 1][column] !== '.') {
+        rowEnd += 1;
       }
       return ({
-        row: row,
-        column: column,
-        gridNum: this.getGridNums()[row][column]
+        rowStart: rowStart,
+        rowEnd: rowEnd,
+        columnStart: column,
+        columnEnd: column,
+        gridNum: this.getGridNums()[rowStart][column]
       })
     }
   }
