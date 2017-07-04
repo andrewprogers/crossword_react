@@ -42,12 +42,16 @@ class CrosswordContainer extends React.Component {
     let crossword = new Crossword(this.state.grid, this.state.clues, this.state.userLetters);
     let next;
     let key = event.key
+
     if (key.match(/[a-z]/) && key.length === 1){
       this.updateUserLetters(key)
     } else {
       switch (key) {
         case 'Backspace':
           this.updateUserLetters('');
+          break;
+        case ' ':
+          this.changeClueDirection();
           break;
         case 'ArrowUp':
           next = crossword.nextCell('up', this.state.selectedCellRow, this.state.selectedCellColumn)

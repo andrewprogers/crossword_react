@@ -15,10 +15,11 @@ x-extract methods to modules
 x-highlight other cells in clue
 x-make all text unselectable
 x-change colors to something more attractive
--move selected cell with arrow keys
-  -skip black cells
-  -
+x-move selected cell with arrow keys
+  x-skip black cells
+  -change direction with spacebar
 -moves selected cell after typing
+-check if all answers correct
 
 
 -global state with redux?
