@@ -9,6 +9,14 @@ const Cell = props => {
   }
   let classString = 'cell unselectable'
 
+  let clickHandler = () => {
+    if ((props.selectedCellRow === props.row) && (props.selectedCellColumn === props.column)){
+      props.on.changeClueDirection();
+    } else {
+      props.on.updateSelectedCell(props.row, props.column)
+    }
+  };
+
   if (letter === '.') {
     classString += ' shaded'
     letter = '';
@@ -23,14 +31,6 @@ const Cell = props => {
       && ((props.column >= clue.columnStart) && (props.column <= clue.columnEnd))) {
     classString += ' selectedClue'
   }
-
-  let clickHandler = () => {
-    if ((props.selectedCellRow === props.row) && (props.selectedCellColumn === props.column)){
-      props.on.changeClueDirection();
-    } else {
-      props.on.updateSelectedCell(props.row, props.column)
-    }
-  };
 
   let number = props.crossword.getGridNums()[props.row][props.column]
   let displayNumber = (number) ? number : '';

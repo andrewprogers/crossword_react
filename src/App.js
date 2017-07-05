@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import CrosswordContainer from './components/CrosswordContainer'
-import data from './constants/exampleCrossword'
+import data from './constants/27'
 
 class App extends Component {
   render() {

@@ -17,8 +17,9 @@ x-make all text unselectable
 x-change colors to something more attractive
 x-move selected cell with arrow keys
   x-skip black cells
-  -change direction with spacebar
+  x-change direction with spacebar
 -moves selected cell after typing
+-moves selected call after deleting
 -check if all answers correct
 
 

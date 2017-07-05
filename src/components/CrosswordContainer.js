@@ -53,6 +53,14 @@ class CrosswordContainer extends React.Component {
         case ' ':
           this.changeClueDirection();
           break;
+        case '1':
+          let clue = crossword.getSelectedClue(
+            this.state.clueDirection,
+            this.state.selectedCellRow,
+            this.state.selectedCellColumn)
+          let next = crossword.nextCellWithinClue(clue, this.state.selectedCellRow, this.state.selectedCellColumn)
+          console.log(next)
+          break;
         case 'ArrowUp':
           next = crossword.nextCell('up', this.state.selectedCellRow, this.state.selectedCellColumn)
           this.updateSelectedCell(next.row, next.column);

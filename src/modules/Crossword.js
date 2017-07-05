@@ -155,7 +155,7 @@ class Crossword {
       default:
         return undefined;
     }
-    
+
     while (true) {
       if ((row === length -1 && col === length -1) && (colChange === 1)){
         nextRow = 0;
@@ -191,6 +191,32 @@ class Crossword {
           column: startCol
         }
       }
+    }
+  }
+
+  nextCellWithinClue(clue, row, col) {
+    let colLength = clue.rowEnd - clue.rowStart + 1;
+    let rowLength = clue.colEnd - clue.colStart + 1;
+    let rowOffset = row - clue.rowStart;
+    let colOffset = col - clue.columnStart;
+    // across / down is broken here
+    for (var r = 1; r <= rowLength; r++) {
+      console.log('hello')
+      for (var c = 1; c <= colLength; c++) {
+        let checkRow = clue.rowStart + ((rowOffset + r) % rowLength)
+        let checkCol = clue.colStart + ((colOffset + c) % colLength)
+        if (this.userLetters[checkRow][checkCol] === '') {
+          return {
+            row: checkRow,
+            column: checkCol
+          }
+        }
+      }
+    }
+    console.log('hi')
+    return {
+      row: row,
+      column: col
     }
   }
 }
