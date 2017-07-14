@@ -2,6 +2,7 @@ import React from 'react';
 import CrosswordGrid from './CrosswordGrid';
 import CluesContainer from './CluesContainer';
 import Crossword from '../modules/Crossword'
+import UserActionController from '../modules/UserActionController'
 
 class CrosswordContainer extends React.Component {
   constructor(props) {
@@ -39,47 +40,8 @@ class CrosswordContainer extends React.Component {
   }
 
   handleKeyDown(event) {
-    let crossword = new Crossword(this.state.grid, this.state.clues, this.state.userLetters);
-    let next;
-    let key = event.key
-
-    if (key.match(/[a-z]/) && key.length === 1){
-      this.updateUserLetters(key)
-    } else {
-      switch (key) {
-        case 'Backspace':
-          this.updateUserLetters('');
-          break;
-        case ' ':
-          this.changeClueDirection();
-          break;
-        case '1':
-          let clue = crossword.getSelectedClue(
-            this.state.clueDirection,
-            this.state.selectedCellRow,
-            this.state.selectedCellColumn)
-          let next = crossword.nextCellWithinClue(clue, this.state.selectedCellRow, this.state.selectedCellColumn)
-          console.log(next)
-          break;
-        case 'ArrowUp':
-          next = crossword.nextCell('up', this.state.selectedCellRow, this.state.selectedCellColumn)
-          this.updateSelectedCell(next.row, next.column);
-          break;
-        case 'ArrowDown':
-          next = crossword.nextCell('down', this.state.selectedCellRow, this.state.selectedCellColumn)
-          this.updateSelectedCell(next.row, next.column);
-          break;
-        case 'ArrowLeft':
-          next = crossword.nextCell('left', this.state.selectedCellRow, this.state.selectedCellColumn)
-          this.updateSelectedCell(next.row, next.column);
-          break;
-        case 'ArrowRight':
-          next = crossword.nextCell('right', this.state.selectedCellRow, this.state.selectedCellColumn)
-          this.updateSelectedCell(next.row, next.column);
-          break;
-        default:
-      }
-    }
+    let controller = new UserActionController(this.state)
+    this.setState(controller.keyPress(event.key))
   }
 
   updateSelectedCell(row, column) {
