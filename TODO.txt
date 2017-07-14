@@ -24,3 +24,24 @@ x-move selected cell with arrow keys
 
 
 -global state with redux?
+
+
+
+
+Notes:
+
+//Decision tree for next cell
+  //If current cell is empty
+    //if there is a next empty cell in clue (cyclicly)
+      //go there
+    //else if this is last clue
+      //???
+    //else
+      //go to first cell of next clue and look for next empty
+      //repeat until found
+    //end
+  //If current cell is not empty
+    //if cell is last in clue
+      //jump to above instructions???
+    //if cell is not last in clue
+      //go to next cell regardless

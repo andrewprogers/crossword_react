@@ -195,30 +195,28 @@ class Crossword {
   }
 
   nextCellWithinClue(clue, row, col) {
-    let colLength = clue.rowEnd - clue.rowStart + 1;
-    let rowLength = clue.colEnd - clue.colStart + 1;
-    let rowOffset = row - clue.rowStart;
-    let colOffset = col - clue.columnStart;
-    // across / down is broken here
-    for (var r = 1; r <= rowLength; r++) {
-      console.log('hello')
-      for (var c = 1; c <= colLength; c++) {
-        let checkRow = clue.rowStart + ((rowOffset + r) % rowLength)
-        let checkCol = clue.colStart + ((colOffset + c) % colLength)
-        if (this.userLetters[checkRow][checkCol] === '') {
-          return {
-            row: checkRow,
-            column: checkCol
-          }
-        }
+    let nextRow = row
+    let nextCol = col
+    if (clue.rowStart === clue.rowEnd) {
+      if (col === clue.columnEnd) {
+        nextCol = clue.columnStart
+      } else {
+        nextCol += 1
+      }
+    } else {
+      if (row === clue.rowEnd) {
+        nextRow = clue.rowStart
+      } else {
+        nextRow += 1
       }
     }
-    console.log('hi')
+
     return {
-      row: row,
-      column: col
-    }
+      row: nextRow,
+      column: nextCol
+    };
   }
+
 }
 
 Crossword.generateEmptyGrid = (size) => {
@@ -235,6 +233,9 @@ Crossword.generateEmptyGrid = (size) => {
 
 Crossword.parseArrayToGrid = (gridArray) => {
     let size = Math.sqrt(gridArray.length);
+    if (!Number.isInteger(size)) {
+      throw Error("Array cannot be parsed to square grid")
+    }
     let newGrid = [];
     for (var i = 0; i < size; i++) {
       let start = i * size
