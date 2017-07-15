@@ -31,14 +31,17 @@ x-move selected cell with arrow keys
 Notes:
 
 //Decision tree for next cell
+  //If crossword does not haveEmptyCells
+    // go to next cell regardless
   //If (current cell is not empty) && (cell is not last in Clue)
     // go to next cell regardless
   //Else
     //if there is a next empty cell in clue (cyclicly)
       //go there
     //else
+     //Loop
       //if this is last clue in current direction
-        //???
+        //change direction and start from the first clue
       //else
         //go to first cell of next clue and look for next empty
         //repeat until found
@@ -46,5 +49,4 @@ Notes:
 
 
 // crossword methods:
-  nextEmptyCellInClue(cyclicly) (false if none)
   allCellsFilled

@@ -696,10 +696,10 @@ describe('Crossword', () => {
     describe('when clue is an across clue',() => {
       beforeAll(() => {
         userSquare =
-          [['a','b','','.'],
+          [['a','b','',''],
            ['e','f','',''],
            ['i','','k','l'],
-           ['.','n','o','p']];
+           ['','n','o','p']];
         crossword = new Crossword(square, clues, userSquare)
       })
       it('returns the next cell if that cell is empty', () => {
@@ -750,10 +750,10 @@ describe('Crossword', () => {
     describe('when clue is a down clue', () => {
       beforeAll(() => {
         userSquare =
-          [['a','b','c','.'],
+          [['a','b','c',''],
            ['e','f','','h'],
            ['','','k','l'],
-           ['.','','o','p']];
+           ['','','o','p']];
         crossword = new Crossword(square, clues, userSquare)
       })
 
@@ -801,6 +801,39 @@ describe('Crossword', () => {
         nextCell = crossword.nextEmptyCellWithinClue(clue, 2, 3)
         expect(nextCell).toEqual(false)
       })
+    })
+  })
+
+  describe('.hasEmptyCells', () => {
+    let square, clues
+    beforeAll(() => {
+      square =
+        [['a','b','c','.'],
+         ['e','f','g','h'],
+         ['i','j','k','l'],
+         ['.','n','o','p']];
+      clues = {
+        across: ['across1', 'across2', 'across3', 'across4'],
+        down: ['down1', 'down2', 'down3', 'down4']
+      }
+    })
+    it('returns true if there is at least one empty cell', () => {
+      let userSquare =
+        [['a','b','c',''],
+         ['e','f','g','h'],
+         ['i','j','k','l'],
+         ['','n','o','']];
+      let crossword = new Crossword(square, clues, userSquare)
+      expect(crossword.hasEmptyCells()).toBe(true)
+    })
+    it('returns false if there are no empty cells', () => {
+      let userSquare =
+        [['a','b','c',''],
+         ['e','f','g','h'],
+         ['i','j','k','l'],
+         ['','n','o','p']];
+      let crossword = new Crossword(square, clues, userSquare)
+      expect(crossword.hasEmptyCells()).toBe(false)
     })
   })
 })

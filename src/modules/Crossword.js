@@ -234,6 +234,16 @@ class Crossword {
     return false;
   }
 
+  hasEmptyCells() {
+    for (var i = 0; i < this.grid.length; i++) {
+      for (var j = 0; j < this.grid.length; j++) {
+        if(this.userLetters[i][j] === '' && this.grid[i][j] !== '.') {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 }
 
 Crossword.generateEmptyGrid = (size) => {
