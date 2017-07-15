@@ -217,6 +217,23 @@ class Crossword {
     };
   }
 
+  nextEmptyCellWithinClue(clue, row, col) {
+    let nextCell = this.nextCellWithinClue(clue, row, col);
+    let currentRow = nextCell.row;
+    let currentCol = nextCell.column;
+
+    while((nextCell.row !== row) || (nextCell.column !== col)) {
+      if (this.userLetters[nextCell.row][nextCell.column] === '' ) {
+        return {
+          row: nextCell.row,
+          column: nextCell.column
+        }
+      }
+      nextCell = this.nextCellWithinClue(clue, nextCell.row, nextCell.column);
+    }
+    return false;
+  }
+
 }
 
 Crossword.generateEmptyGrid = (size) => {

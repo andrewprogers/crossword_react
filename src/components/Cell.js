@@ -10,11 +10,11 @@ const Cell = props => {
   let classString = 'cell unselectable'
 
   let clickHandler = () => {
-    if ((props.selectedCellRow === props.row) && (props.selectedCellColumn === props.column)){
-      props.on.changeClueDirection();
-    } else {
-      props.on.updateSelectedCell(props.row, props.column)
+    let currentCell = {
+      row: props.row,
+      column: props.column
     }
+    props.on.handleMouseClick(currentCell)
   };
 
   if (letter === '.') {

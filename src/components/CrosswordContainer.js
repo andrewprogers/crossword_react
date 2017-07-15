@@ -24,24 +24,19 @@ class CrosswordContainer extends React.Component {
     this.on = {
       updateSelectedCell: this.updateSelectedCell.bind(this),
       changeClueDirection: this.changeClueDirection.bind(this),
-      updateUserLetters: this.updateUserLetters.bind(this),
-      handleKeyDown: this.handleKeyDown.bind(this)
+      handleKeyDown: this.handleKeyDown.bind(this),
+      handleMouseClick: this.handleMouseClick.bind(this)
     }
-  }
-
-  updateUserLetters(letter) {
-    let old = this.state.userLetters
-    let newLetters = [];
-    for (var i = 0; i < old.length; i++) {
-      newLetters.push(old[i].slice())
-    }
-    newLetters[this.state.selectedCellRow][this.state.selectedCellColumn] = letter.toUpperCase();
-    this.setState({userLetters: newLetters});
   }
 
   handleKeyDown(event) {
     let controller = new UserActionController(this.state)
     this.setState(controller.keyPress(event.key))
+  }
+
+  handleMouseClick(clickedCell) {
+    let controller = new UserActionController(this.state)
+    this.setState(controller.mouseClick(clickedCell))
   }
 
   updateSelectedCell(row, column) {

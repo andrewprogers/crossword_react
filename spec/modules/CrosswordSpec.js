@@ -678,4 +678,129 @@ describe('Crossword', () => {
       })
     })
   })
+
+  describe('.nextEmptyCellWithinClue', () => {
+    let crossword, square, userSquare, clues, nextCell
+    beforeAll(() => {
+      square =
+        [['a','b','c','.'],
+         ['e','f','g','h'],
+         ['i','j','k','l'],
+         ['.','n','o','p']];
+      clues = {
+        across: ['across1', 'across2', 'across3', 'across4'],
+        down: ['down1', 'down2', 'down3', 'down4']
+      }
+    })
+
+    describe('when clue is an across clue',() => {
+      beforeAll(() => {
+        userSquare =
+          [['a','b','','.'],
+           ['e','f','',''],
+           ['i','','k','l'],
+           ['.','n','o','p']];
+        crossword = new Crossword(square, clues, userSquare)
+      })
+      it('returns the next cell if that cell is empty', () => {
+        let clue = {
+          rowStart: 0,
+          rowEnd: 0,
+          columnStart: 0,
+          columnEnd: 2,
+          gridNum: 1
+        }
+        nextCell = crossword.nextEmptyCellWithinClue(clue, 0, 1)
+        expect(nextCell).toEqual({row: 0, column: 2})
+      })
+      it('returns the first empty cell if multiple in a row', () => {
+        let clue = {
+          rowStart: 1,
+          rowEnd: 1,
+          columnStart: 0,
+          columnEnd: 3,
+          gridNum: 4
+        }
+        nextCell = crossword.nextEmptyCellWithinClue(clue, 1, 0)
+        expect(nextCell).toEqual({row: 1, column: 2})
+      })
+      it('returns an empty cell if it is before the current cell', () => {
+        let clue = {
+          rowStart: 2,
+          rowEnd: 2,
+          columnStart: 0,
+          columnEnd: 3,
+          gridNum: 6
+        }
+        nextCell = crossword.nextEmptyCellWithinClue(clue, 2, 2)
+        expect(nextCell).toEqual({row: 2, column: 1})
+      })
+      it('returns false if no cell in the clue is empty', () => {
+        let clue = {
+          rowStart: 3,
+          rowEnd: 3,
+          columnStart: 1,
+          columnEnd: 3,
+          gridNum: 7
+        }
+        nextCell = crossword.nextEmptyCellWithinClue(clue, 3, 2)
+        expect(nextCell).toEqual(false)
+      })
+    })
+    describe('when clue is a down clue', () => {
+      beforeAll(() => {
+        userSquare =
+          [['a','b','c','.'],
+           ['e','f','','h'],
+           ['','','k','l'],
+           ['.','','o','p']];
+        crossword = new Crossword(square, clues, userSquare)
+      })
+
+      it('returns the next cell if that cell is empty', () => {
+        let clue = {
+          rowStart: 0,
+          rowEnd: 2,
+          columnStart: 0,
+          columnEnd: 0,
+          gridNum: 1
+        }
+        nextCell = crossword.nextEmptyCellWithinClue(clue, 1, 0)
+        expect(nextCell).toEqual({row: 2, column: 0})
+      })
+      it('returns the first empty cell if multiple in a row', () => {
+        let clue = {
+          rowStart: 0,
+          rowEnd: 3,
+          columnStart: 1,
+          columnEnd: 1,
+          gridNum: 2
+        }
+        nextCell = crossword.nextEmptyCellWithinClue(clue, 0, 1)
+        expect(nextCell).toEqual({row: 2, column: 1})
+      })
+      it('returns an empty cell if it is before the current cell', () => {
+        let clue = {
+          rowStart: 0,
+          rowEnd: 3,
+          columnStart: 2,
+          columnEnd: 2,
+          gridNum: 3
+        }
+        nextCell = crossword.nextEmptyCellWithinClue(clue, 2, 2)
+        expect(nextCell).toEqual({row: 1, column: 2})
+      })
+      it('returns false if no cell in the clue is empty', () => {
+        let clue = {
+          rowStart: 1,
+          rowEnd: 3,
+          columnStart: 3,
+          columnEnd: 3,
+          gridNum: 5
+        }
+        nextCell = crossword.nextEmptyCellWithinClue(clue, 2, 3)
+        expect(nextCell).toEqual(false)
+      })
+    })
+  })
 })

@@ -150,4 +150,28 @@ describe('UserActionController', () => {
       })
     })
   })
+
+  describe('.mouseClick returns an object for updating state', () => {
+    let clickedCell, fakeState, controller
+    beforeEach(() => {
+      fakeState = new FakeState();
+      clickedCell = {row: 1, column: 1};
+    })
+
+    it('updates clue direction when the current cell is clicked', () => {
+      fakeState.setCell(1, 1);
+      controller = new UserActionController(fakeState);
+      let newState = controller.mouseClick(clickedCell);
+      expect(newState).toEqual({clueDirection: 'down'})
+    })
+
+    it('updates selected cell when a new cell is clicked', () => {
+      controller = new UserActionController(fakeState);
+      let newState = controller.mouseClick(clickedCell);
+      expect(newState).toEqual({
+        selectedCellRow: 1,
+        selectedCellColumn: 1
+      })
+    })
+  })
 })

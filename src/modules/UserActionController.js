@@ -35,11 +35,7 @@ class UserActionController {
           newState.userLetters = this.state.userLetters;
           break;
         case ' ':
-          if (this.state.clueDirection === 'across'){
-            newState.clueDirection = 'down';
-          } else {
-            newState.clueDirection = 'across';
-          }
+          newState.clueDirection = this.nextDirection();
           break;
         case 'ArrowUp':
           next = crossword.nextCell('up', this.state.selectedCellRow, this.state.selectedCellColumn)
@@ -66,6 +62,26 @@ class UserActionController {
       }
     }
     return newState;
+  }
+
+  mouseClick(currentCell) {
+    let newState = {};
+    if ((currentCell.row === this.state.selectedCellRow)
+    && (currentCell.column === this.state.selectedCellColumn)) {
+      newState.clueDirection = this.nextDirection();
+    } else {
+      newState.selectedCellRow = currentCell.row;
+      newState.selectedCellColumn = currentCell.column;
+    }
+    return newState;
+  }
+
+  nextDirection() {
+    if (this.state.clueDirection === 'across'){
+      return 'down';
+    } else {
+      return 'across';
+    }
   }
 }
 
