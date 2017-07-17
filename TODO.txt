@@ -49,4 +49,3 @@ Notes:
 
 
 // crossword methods:
-  allCellsFilled

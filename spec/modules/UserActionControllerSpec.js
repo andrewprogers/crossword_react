@@ -99,6 +99,165 @@ describe('UserActionController', () => {
         newState = controller2.keyPress('G');
         expect(newState.userLetters[0][1]).toEqual('G');
       })
+
+      describe('changes the selected cell', () => {
+        describe('when clue direction is across', () => {
+          beforeAll(() => {
+            fakeState.clueDirection = 'across'
+          });
+          it('returns next cell within clue when there are no empty cells and not on last cell of clue', () => {
+            fakeState.userLetters =
+            [['a','b','c','d'],
+             ['e','f','.','h'],
+             ['i','j','k','l'],
+             ['m','n','o','.']];
+            fakeState.setCell(0, 0);
+            controller = new UserActionController(fakeState);
+            newState = controller.keyPress('a')
+            expect(newState.selectedCellRow).toEqual(0)
+            expect(newState.selectedCellColumn).toEqual(1)
+          })
+          it('returns first cell of next clue when there are no empty cells and on last cell of clue', () => {
+            fakeState.userLetters =
+            [['a','b','c','d'],
+             ['e','f','.','h'],
+             ['i','j','k','l'],
+             ['m','n','o','.']];
+            fakeState.setCell(1, 1);
+            controller = new UserActionController(fakeState);
+            newState = controller.keyPress('a')
+            expect(newState.selectedCellRow).toEqual(1)
+            expect(newState.selectedCellColumn).toEqual(3)
+          })
+          it('returns next cell in clue when current is not empty and not last in clue', () => {
+            fakeState.userLetters =
+            [['','b','c','d'],
+             ['e','f','.','h'],
+             ['i','j','k','l'],
+             ['m','n','o','.']];
+            fakeState.setCell(0, 2);
+            controller = new UserActionController(fakeState);
+            newState = controller.keyPress('a')
+            expect(newState.selectedCellRow).toEqual(0)
+            expect(newState.selectedCellColumn).toEqual(3)
+          })
+          it('returns next empty cell in clue if current is empty', () => {
+            fakeState.userLetters =
+            [['','b','','d'],
+             ['e','f','.','h'],
+             ['i','j','k','l'],
+             ['m','n','o','.']];
+            fakeState.setCell(0, 2);
+            controller = new UserActionController(fakeState);
+            newState = controller.keyPress('a')
+            expect(newState.selectedCellRow).toEqual(0)
+            expect(newState.selectedCellColumn).toEqual(0)
+          })
+          it('returns first empty cell from subsequent across clues when current cell empty', () => {
+            fakeState.userLetters =
+            [['a','b','','d'],
+             ['e','f','.','h'],
+             ['i','','k','l'],
+             ['m','n','o','.']];
+            fakeState.setCell(0, 2);
+            controller = new UserActionController(fakeState);
+            newState = controller.keyPress('a')
+            expect(newState.selectedCellRow).toEqual(2)
+            expect(newState.selectedCellColumn).toEqual(1)
+          })
+          it('returns first empty cell of down clues if none in subsequent across clues', () => {
+            fakeState.userLetters =
+            [['','b','','d'],
+             ['e','f','.','h'],
+             ['i','j','k','l'],
+             ['m','','o','.']];
+            fakeState.setCell(3, 1);
+            controller = new UserActionController(fakeState);
+            newState = controller.keyPress('a')
+            expect(newState.selectedCellRow).toEqual(0)
+            expect(newState.selectedCellColumn).toEqual(0)
+            expect(newState.clueDirection).toEqual('down')
+          })
+        })
+        describe('when clue direction is down', () => {
+          beforeAll(() => {
+            fakeState.clueDirection = 'down'
+          });
+
+          it('returns next cell within clue when there are no empty cells and not on last cell of clue', () => {
+            fakeState.userLetters =
+            [['a','b','c','.'],
+             ['e','f','g','h'],
+             ['i','j','k','l'],
+             ['.','n','o','.']];
+            fakeState.setCell(1, 1);
+            controller = new UserActionController(fakeState);
+            newState = controller.keyPress('a')
+            expect(newState.selectedCellRow).toEqual(2)
+            expect(newState.selectedCellColumn).toEqual(1)
+          })
+          it('returns first cell of next clue when there are no empty cells and on last cell of clue', () => {
+            fakeState.userLetters =
+            [['a','b','c','.'],
+             ['e','f','g','h'],
+             ['i','j','k','l'],
+             ['.','n','o','.']];
+            fakeState.setCell(0, 3);
+            controller = new UserActionController(fakeState);
+            newState = controller.keyPress('a')
+            expect(newState.selectedCellRow).toEqual(0)
+            expect(newState.selectedCellColumn).toEqual(1)
+          })
+          it('returns next cell in clue when current is not empty and not last in clue', () => {
+            fakeState.userLetters =
+            [['a','b','c','.'],
+             ['e','f','g','h'],
+             ['','j','k','l'],
+             ['.','n','o','.']];
+            fakeState.setCell(0, 0);
+            controller = new UserActionController(fakeState);
+            newState = controller.keyPress('a')
+            expect(newState.selectedCellRow).toEqual(1)
+            expect(newState.selectedCellColumn).toEqual(0)
+          })
+          it('returns next empty cell in clue if current is empty', () => {
+            fakeState.userLetters =
+            [['','b','c','.'],
+             ['e','f','g','h'],
+             ['','j','k','l'],
+             ['.','n','o','.']];
+            fakeState.setCell(0, 0);
+            controller = new UserActionController(fakeState);
+            newState = controller.keyPress('a')
+            expect(newState.selectedCellRow).toEqual(2)
+            expect(newState.selectedCellColumn).toEqual(0)
+          })
+          it('returns first empty cell from subsequent down clues when current cell empty', () => {
+            fakeState.userLetters =
+            [['a','b','','.'],
+             ['e','f','g','h'],
+             ['','j','k','l'],
+             ['.','n','o','.']];
+            fakeState.setCell(2, 0);
+            controller = new UserActionController(fakeState);
+            newState = controller.keyPress('a')
+            expect(newState.selectedCellRow).toEqual(0)
+            expect(newState.selectedCellColumn).toEqual(2)
+          })
+          it('returns first empty cell of across clues if none in subsequent down clues', () => {
+            fakeState.userLetters =
+            [['a','b','','.'],
+             ['e','','g','h'],
+             ['i','j','k','l'],
+             ['.','n','o','.']];
+            fakeState.setCell(0, 2);
+            controller = new UserActionController(fakeState);
+            newState = controller.keyPress('a')
+            expect(newState.selectedCellRow).toEqual(1)
+            expect(newState.selectedCellColumn).toEqual(1)
+          })
+        })
+      })
     })
 
     describe('arrow keys', () => {
