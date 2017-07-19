@@ -25,12 +25,11 @@ class UserActionController {
     let next;
     let crossword = new Crossword(this.state.grid, this.state.clues, this.state.userLetters)
     if (key.match(/[a-zA-Z]/) && key.length === 1){
-      Object.assign(newState, this.handleLetter(key));
+      newState = this.handleLetter(key);
     } else {
       switch (key) {
         case 'Backspace':
-          this.state.userLetters[this.state.selectedCellRow][this.state.selectedCellColumn] = '';
-          newState.userLetters = this.state.userLetters;
+          newState = this.handleBackspace();
           break;
         case ' ':
           newState.clueDirection = this.nextDirection();
@@ -117,6 +116,38 @@ class UserActionController {
       newState.clueDirection = currentClue.direction();
     }
 
+    return newState;
+  }
+
+  handleBackspace() {
+    let newState = {}
+    let row = this.state.selectedCellRow;
+    let column = this.state.selectedCellColumn;
+    let currentCellEmpty = (this.state.userLetters[row][column] === '')
+    let crossword = new Crossword(this.state.grid, this.state.clues, this.state.userLetters)
+    let currentClue = crossword.getSelectedClue(this.state.clueDirection, row, column)
+    if (currentCellEmpty) {
+      if ((currentClue.row.start === row) && (currentClue.column.start === column)) {
+        currentClue = crossword.previousClue(currentClue);
+        row = currentClue.row.end
+        column = currentClue.column.end
+      } else {
+        if (this.state.clueDirection === 'across') {
+          column -= 1;
+        } else {
+          row -= 1;
+        }
+      }
+      newState.selectedCellRow = row;
+      newState.selectedCellColumn = column;
+
+      if (this.state.clueDirection !== currentClue.direction()){
+        newState.clueDirection = currentClue.direction();
+      }
+    }
+
+    this.state.userLetters[row][column] = '';
+    newState.userLetters = this.state.userLetters;
     return newState;
   }
 }

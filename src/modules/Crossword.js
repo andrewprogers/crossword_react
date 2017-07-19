@@ -245,11 +245,31 @@ class Crossword {
         return downClues[index + 1]
       }
     } else {
-
       if (index === acrossClues.length - 1){
         return downClues[0];
       } else {
         return acrossClues[index + 1]
+      }
+    }
+  }
+
+  previousClue(clue) {
+    let acrossClues = this.getAcrossClues();
+    let downClues = this.getDownClues();
+    let index = acrossClues.findIndex(el => clue.match(el))
+
+    if (index === -1) {
+      index = downClues.findIndex(el => clue.match(el))
+      if (index === 0){
+        return acrossClues[acrossClues.length - 1];
+      } else {
+        return downClues[index - 1]
+      }
+    } else {
+      if (index === 0){
+        return downClues[downClues.length - 1];
+      } else {
+        return acrossClues[index - 1]
       }
     }
   }

@@ -18,34 +18,9 @@ x-change colors to something more attractive
 x-move selected cell with arrow keys
   x-skip black cells
   x-change direction with spacebar
--moves selected cell after typing
--moves selected call after deleting
+x-moves selected cell after typing
+x-moves selected call after deleting
 -check if all answers correct
 
 
 -global state with redux?
-
-
-
-
-Notes:
-
-//Decision tree for next cell
-  //If crossword does not haveEmptyCells
-    // go to next cell regardless
-  //If (current cell is not empty) && (cell is not last in Clue)
-    // go to next cell regardless
-  //Else
-    //if there is a next empty cell in clue (cyclicly)
-      //go there
-    //else
-     //Loop
-      //if this is last clue in current direction
-        //change direction and start from the first clue
-      //else
-        //go to first cell of next clue and look for next empty
-        //repeat until found
-    //end 
-
-
-// crossword methods:
