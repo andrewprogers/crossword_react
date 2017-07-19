@@ -45,7 +45,7 @@ Notes:
       //else
         //go to first cell of next clue and look for next empty
         //repeat until found
-    //end
+    //end 
 
 
 // crossword methods:

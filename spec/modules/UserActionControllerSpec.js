@@ -87,10 +87,12 @@ describe('UserActionController', () => {
     })
 
     describe('letter', () => {
+      let newState;
+
       it('changes the letter in the current cell to the capital version of the pressed letter', () => {
         fakeState.userLetters[0][0] = 'z'
         let controller1 = new UserActionController(fakeState)
-        let newState = controller1.keyPress('f');
+        newState = controller1.keyPress('f');
         expect(newState.userLetters[0][0]).toEqual('F');
 
         fakeState.userLetters[0][1] = 'e'
@@ -102,7 +104,7 @@ describe('UserActionController', () => {
 
       describe('changes the selected cell', () => {
         describe('when clue direction is across', () => {
-          beforeAll(() => {
+          beforeEach(() => {
             fakeState.clueDirection = 'across'
           });
           it('returns next cell within clue when there are no empty cells and not on last cell of clue', () => {
@@ -180,7 +182,13 @@ describe('UserActionController', () => {
           })
         })
         describe('when clue direction is down', () => {
-          beforeAll(() => {
+          beforeEach(() => {
+            fakeState = new FakeState(
+              [['a','b','c','.'],
+               ['e','f','g','h'],
+               ['i','j','k','l'],
+               ['.','n','o','.']]
+            )
             fakeState.clueDirection = 'down'
           });
 
@@ -202,11 +210,11 @@ describe('UserActionController', () => {
              ['e','f','g','h'],
              ['i','j','k','l'],
              ['.','n','o','.']];
-            fakeState.setCell(0, 3);
+            fakeState.setCell(3, 2);
             controller = new UserActionController(fakeState);
             newState = controller.keyPress('a')
-            expect(newState.selectedCellRow).toEqual(0)
-            expect(newState.selectedCellColumn).toEqual(1)
+            expect(newState.selectedCellRow).toEqual(1)
+            expect(newState.selectedCellColumn).toEqual(3)
           })
           it('returns next cell in clue when current is not empty and not last in clue', () => {
             fakeState.userLetters =
