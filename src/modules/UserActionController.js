@@ -93,18 +93,7 @@ class UserActionController {
     newState.userLetters = this.state.userLetters;
     let currentClue = crossword.getSelectedClue(this.state.clueDirection, row, column)
 
-    if (!crossword.hasEmptyCells() || (!isCellEmpty && ((currentClue.rowEnd !== row) || (currentClue.columnEnd !== column)))) {
-      if ((currentClue.rowEnd !== row) || (currentClue.columnEnd !== column)) {
-        let nextCell = crossword.nextCellWithinClue(currentClue, row, column)
-        newState.selectedCellRow = nextCell.row;
-        newState.selectedCellColumn = nextCell.column;
-      } else {
-        let nextClue = crossword.nextClue(currentClue)
-        newState.selectedCellRow = nextClue.row.start;
-        newState.selectedCellColumn = nextClue.column.start;
-      }
-    } else {
-      //crossword has empty cells somewhere
+    if (crossword.hasEmptyCells() && (isCellEmpty || currentClue.isLastCell(row, column))) {
       let nextEmpty = crossword.nextEmptyCellWithinClue(currentClue, row, column)
       while (!nextEmpty) {
         currentClue = crossword.nextClue(currentClue)
@@ -112,7 +101,18 @@ class UserActionController {
       }
       newState.selectedCellRow = nextEmpty.row;
       newState.selectedCellColumn = nextEmpty.column;
+    } else {
+      if (currentClue.isLastCell(row, column)) {
+        let nextClue = crossword.nextClue(currentClue)
+        newState.selectedCellRow = nextClue.row.start;
+        newState.selectedCellColumn = nextClue.column.start;
+      } else {
+        let nextCell = crossword.nextCellWithinClue(currentClue, row, column)
+        newState.selectedCellRow = nextCell.row;
+        newState.selectedCellColumn = nextCell.column;
+      }
     }
+
     if (this.state.clueDirection !== currentClue.direction){
       newState.clueDirection = currentClue.direction();
     }
