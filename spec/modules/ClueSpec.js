@@ -112,5 +112,21 @@ describe(Clue, () => {
         expect(clue.direction()).toEqual('down')
       })
     })
+
+    describe('isLastCell', () => {
+      it('returns true if the given row and col are the last cell of the clue', () => {
+        let clue = new Clue(2, [1, 3], 2, "some clue")
+        let clue2 = new Clue([1, 3], 0, 2, "some clue")
+        expect(clue.isLastCell(2, 3)).toEqual(true)
+        expect(clue2.isLastCell(3, 0)).toEqual(true)
+      })
+
+      it('returns false if the given row and col are not the last cell of the clue', () => {
+        let clue = new Clue(2, [1, 3], 2, "some clue")
+        let clue2 = new Clue([1, 3], 0, 2, "some clue")
+        expect(clue.isLastCell(1, 3)).toEqual(false)
+        expect(clue2.isLastCell(3, 2)).toEqual(false)
+      })
+    })
   })
 })

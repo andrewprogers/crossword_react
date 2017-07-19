@@ -35,6 +35,11 @@ class Clue {
     let result = ((this.isAcross()) ? 'across' : 'down')
     return result;
   }
+
+  isLastCell(row, col) {
+    let result = ((row === this.row.end) && (col === this.column.end))
+    return result;
+  }
 }
 
 export default Clue;

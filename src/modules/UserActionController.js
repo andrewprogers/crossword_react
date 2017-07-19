@@ -87,32 +87,32 @@ class UserActionController {
     let row = this.state.selectedCellRow;
     let column = this.state.selectedCellColumn;
     let crossword = new Crossword(this.state.grid, this.state.clues, this.state.userLetters)
-    let isCellEmpty = (this.state.userLetters[this.state.selectedCellRow][this.state.selectedCellColumn] === '')
-    key = key.toUpperCase();
-    this.state.userLetters[this.state.selectedCellRow][this.state.selectedCellColumn] = key;
-    newState.userLetters = this.state.userLetters;
-    let currentClue = crossword.getSelectedClue(this.state.clueDirection, this.state.selectedCellRow, this.state.selectedCellColumn)
+    let isCellEmpty = (this.state.userLetters[row][column] === '')
 
-    if (!crossword.hasEmptyCells() || (!isCellEmpty && ((currentClue.rowEnd !== this.state.selectedCellRow) || (currentClue.columnEnd !== this.state.selectedCellColumn)))) {
-      if ((currentClue.rowEnd !== this.state.selectedCellRow) || (currentClue.columnEnd !== this.state.selectedCellColumn)) {
-        let nextCell = crossword.nextCellWithinClue(currentClue, this.state.selectedCellRow, this.state.selectedCellColumn)
-        newState.selectedCellRow = nextCell.row;
-        newState.selectedCellColumn = nextCell.column;
-      } else {
-        let nextClue = crossword.nextClue(currentClue)
-        newState.selectedCellRow = nextClue.row.start;
-        newState.selectedCellColumn = nextClue.column.start;
-      }
-    } else {
-      //crossword has empty cells somewhere
-      let nextEmpty = crossword.nextEmptyCellWithinClue(currentClue, this.state.selectedCellRow, this.state.selectedCellColumn)
+    this.state.userLetters[row][column] = key.toUpperCase();
+    newState.userLetters = this.state.userLetters;
+    let currentClue = crossword.getSelectedClue(this.state.clueDirection, row, column)
+
+    if (crossword.hasEmptyCells() && (isCellEmpty || currentClue.isLastCell(row, column))) {
+      let nextEmpty = crossword.nextEmptyCellWithinClue(currentClue, row, column)
       while (!nextEmpty) {
         currentClue = crossword.nextClue(currentClue)
         nextEmpty = crossword.nextEmptyCellWithinClue(currentClue, currentClue.row.end, currentClue.column.end)
       }
       newState.selectedCellRow = nextEmpty.row;
       newState.selectedCellColumn = nextEmpty.column;
+    } else {
+      if (currentClue.isLastCell(row, column)) {
+        let nextClue = crossword.nextClue(currentClue)
+        newState.selectedCellRow = nextClue.row.start;
+        newState.selectedCellColumn = nextClue.column.start;
+      } else {
+        let nextCell = crossword.nextCellWithinClue(currentClue, row, column)
+        newState.selectedCellRow = nextCell.row;
+        newState.selectedCellColumn = nextCell.column;
+      }
     }
+
     if (this.state.clueDirection !== currentClue.direction){
       newState.clueDirection = currentClue.direction();
     }
