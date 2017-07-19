@@ -1,4 +1,5 @@
 import Crossword from '../../src/modules/Crossword';
+import Clue from '../../src/modules/Clue';
 
 describe('Crossword', () => {
   describe('.generateEmptyGrid', () => {
@@ -191,11 +192,7 @@ describe('Crossword', () => {
 
     it('returns an array of objects representing clues', () => {
       expect(acrossClues).toEqual(jasmine.any(Array))
-      expect(acrossClues[0]).toEqual(jasmine.any(Object))
-      expect(Number.isInteger(acrossClues[0]['gridNum'])).toEqual(true)
-      expect(Number.isInteger(acrossClues[0]['row'])).toEqual(true)
-      expect(Number.isInteger(acrossClues[0]['column'])).toEqual(true)
-      expect(acrossClues[0]['text']).toEqual('across1')
+      expect(acrossClues[0]).toEqual(jasmine.any(Clue))
     })
 
     it('returns one clue object for each across clue', () => {
@@ -207,21 +204,11 @@ describe('Crossword', () => {
     })
 
     it('includes across clues from column 0', () => {
-      expect(acrossClues[2]).toEqual({
-        gridNum: 4,
-        row: 1,
-        column: 0,
-        text: 'across3'
-      })
+      expect(acrossClues[2]).toEqual(new Clue(1, [0, 0], 4, 'across3'))
     })
 
     it('includes across clues from cells to the right of black squares', () => {
-      expect(acrossClues[3]).toEqual({
-        gridNum: 5,
-        row: 1,
-        column: 2,
-        text: 'across4'
-      })
+      expect(acrossClues[3]).toEqual(new Clue(1, [2, 3], 5, 'across4'))
     })
 
     it('calculates and stores the result once for later retrieval', () => {
@@ -247,11 +234,7 @@ describe('Crossword', () => {
 
     it('returns an array of objects representing clues', () => {
       expect(downClues).toEqual(jasmine.any(Array))
-      expect(downClues[0]).toEqual(jasmine.any(Object))
-      expect(Number.isInteger(downClues[0]['gridNum'])).toEqual(true)
-      expect(Number.isInteger(downClues[0]['row'])).toEqual(true)
-      expect(Number.isInteger(downClues[0]['column'])).toEqual(true)
-      expect(downClues[0]['text']).toEqual('down1')
+      expect(downClues[0]).toEqual(jasmine.any(Clue))
     })
 
     it('returns one clue object for each down clue', () => {
@@ -263,21 +246,11 @@ describe('Crossword', () => {
     })
 
     it('includes down clues from row 0', () => {
-      expect(downClues[1]).toEqual({
-        gridNum: 2,
-        row: 0,
-        column: 2,
-        text: 'down2'
-      })
+      expect(downClues[1]).toEqual(new Clue([0, 2], 2, 2, 'down2'))
     })
 
     it('includes down clues from cells below black squares', () => {
-      expect(downClues[3]).toEqual({
-        gridNum: 7,
-        row: 2,
-        column: 1,
-        text: 'down4'
-      })
+      expect(downClues[3]).toEqual(new Clue([2, 3], 1, 7, 'down4'))
     })
 
     it('calculates and stores the result once for later retrieval', () => {
@@ -302,76 +275,41 @@ describe('Crossword', () => {
 
       describe('when the direction is across', () => {
         it('returns the clue when input row and column are the first cell of the clue', () => {
-          expect(crossword.getSelectedClue('across', 2, 0)).toEqual({
-            rowStart: 2,
-            rowEnd: 2,
-            columnStart: 0,
-            columnEnd: 3,
-            gridNum: 6
-          })
-          expect(crossword.getSelectedClue('across', 1, 2)).toEqual({
-            rowStart: 1,
-            rowEnd: 1,
-            columnStart: 2,
-            columnEnd: 3,
-            gridNum: 5
-          })
+          expect(crossword.getSelectedClue('across', 2, 0))
+          .toEqual(new Clue(2, [0, 3], 6, 'across5'))
+
+          expect(crossword.getSelectedClue('across', 1, 2))
+          .toEqual(new Clue(1, [2, 3], 5, 'across4'))
         })
+
         it('returns the clue when input row and column are the last cell of the clue', () => {
-          expect(crossword.getSelectedClue('across', 2, 2)).toEqual({
-            rowStart: 2,
-            rowEnd: 2,
-            columnStart: 0,
-            columnEnd: 3,
-            gridNum: 6
-          })
+          expect(crossword.getSelectedClue('across', 2, 3))
+          .toEqual(new Clue(2, [0, 3], 6, 'across5'))
         })
+
         it('returns the clue when input row and column are in the middle of the clue', () => {
-          expect(crossword.getSelectedClue('across', 2, 2)).toEqual({
-            rowStart: 2,
-            rowEnd: 2,
-            columnStart: 0,
-            columnEnd: 3,
-            gridNum: 6
-          })
+          expect(crossword.getSelectedClue('across', 2, 2))
+          .toEqual(new Clue(2, [0, 3], 6, 'across5'))
         })
       })
 
       describe('when the direction is down', () => {
         it('returns the clue when input row and column are the first cell of the clue',() => {
-          expect(crossword.getSelectedClue('down', 0, 2)).toEqual({
-            rowStart: 0,
-            rowEnd: 2,
-            columnStart: 2,
-            columnEnd: 2,
-            gridNum: 2
-          })
-          expect(crossword.getSelectedClue('down', 2, 1)).toEqual({
-            rowStart: 2,
-            rowEnd: 3,
-            columnStart: 1,
-            columnEnd: 1,
-            gridNum: 7
-          })
+          expect(crossword.getSelectedClue('down', 0, 2))
+          .toEqual(new Clue([0, 2], 2, 2, 'down2'))
+
+          expect(crossword.getSelectedClue('down', 2, 1))
+          .toEqual(new Clue([2, 3], 1, 7, 'down4'))
         })
 
         it('returns the clue when input row and column are the last cell of the clue', () => {
-          expect(crossword.getSelectedClue('down', 2, 2)).toEqual({
-            rowStart: 0,
-            rowEnd: 2,
-            columnStart: 2,
-            columnEnd: 2,
-            gridNum: 2
-          })
+          expect(crossword.getSelectedClue('down', 2, 2))
+          .toEqual(new Clue([0, 2], 2, 2, 'down2'))
         })
+
         it('returns the clue when input row and column are in the middle of the clue', () => {
-          expect(crossword.getSelectedClue('down', 1, 2)).toEqual({
-            rowStart: 0,
-            rowEnd: 2,
-            columnStart: 2,
-            columnEnd: 2,
-            gridNum: 2
-          })
+          expect(crossword.getSelectedClue('down', 1, 2))
+          .toEqual(new Clue([0, 2], 2, 2, 'down2'))
         })
       })
   })
@@ -676,6 +614,204 @@ describe('Crossword', () => {
           column: 0
         })
       })
+    })
+  })
+
+  describe('.nextEmptyCellWithinClue', () => {
+    let crossword, square, userSquare, clues, nextCell
+    beforeAll(() => {
+      square =
+        [['a','b','c','.'],
+         ['e','f','g','h'],
+         ['i','j','k','l'],
+         ['.','n','o','p']];
+      clues = {
+        across: ['across1', 'across2', 'across3', 'across4'],
+        down: ['down1', 'down2', 'down3', 'down4']
+      }
+    })
+
+    describe('when clue is an across clue',() => {
+      beforeAll(() => {
+        userSquare =
+          [['a','b','',''],
+           ['e','f','',''],
+           ['i','','k','l'],
+           ['','n','o','p']];
+        crossword = new Crossword(square, clues, userSquare)
+      })
+      it('returns the next cell if that cell is empty', () => {
+        let clue = {
+          rowStart: 0,
+          rowEnd: 0,
+          columnStart: 0,
+          columnEnd: 2,
+          gridNum: 1
+        }
+        nextCell = crossword.nextEmptyCellWithinClue(clue, 0, 1)
+        expect(nextCell).toEqual({row: 0, column: 2})
+      })
+      it('returns the first empty cell if multiple in a row', () => {
+        let clue = {
+          rowStart: 1,
+          rowEnd: 1,
+          columnStart: 0,
+          columnEnd: 3,
+          gridNum: 4
+        }
+        nextCell = crossword.nextEmptyCellWithinClue(clue, 1, 0)
+        expect(nextCell).toEqual({row: 1, column: 2})
+      })
+      it('returns an empty cell if it is before the current cell', () => {
+        let clue = {
+          rowStart: 2,
+          rowEnd: 2,
+          columnStart: 0,
+          columnEnd: 3,
+          gridNum: 6
+        }
+        nextCell = crossword.nextEmptyCellWithinClue(clue, 2, 2)
+        expect(nextCell).toEqual({row: 2, column: 1})
+      })
+      it('returns false if no cell in the clue is empty', () => {
+        let clue = {
+          rowStart: 3,
+          rowEnd: 3,
+          columnStart: 1,
+          columnEnd: 3,
+          gridNum: 7
+        }
+        nextCell = crossword.nextEmptyCellWithinClue(clue, 3, 2)
+        expect(nextCell).toEqual(false)
+      })
+    })
+    describe('when clue is a down clue', () => {
+      beforeAll(() => {
+        userSquare =
+          [['a','b','c',''],
+           ['e','f','','h'],
+           ['','','k','l'],
+           ['','','o','p']];
+        crossword = new Crossword(square, clues, userSquare)
+      })
+
+      it('returns the next cell if that cell is empty', () => {
+        let clue = {
+          rowStart: 0,
+          rowEnd: 2,
+          columnStart: 0,
+          columnEnd: 0,
+          gridNum: 1
+        }
+        nextCell = crossword.nextEmptyCellWithinClue(clue, 1, 0)
+        expect(nextCell).toEqual({row: 2, column: 0})
+      })
+      it('returns the first empty cell if multiple in a row', () => {
+        let clue = {
+          rowStart: 0,
+          rowEnd: 3,
+          columnStart: 1,
+          columnEnd: 1,
+          gridNum: 2
+        }
+        nextCell = crossword.nextEmptyCellWithinClue(clue, 0, 1)
+        expect(nextCell).toEqual({row: 2, column: 1})
+      })
+      it('returns an empty cell if it is before the current cell', () => {
+        let clue = {
+          rowStart: 0,
+          rowEnd: 3,
+          columnStart: 2,
+          columnEnd: 2,
+          gridNum: 3
+        }
+        nextCell = crossword.nextEmptyCellWithinClue(clue, 2, 2)
+        expect(nextCell).toEqual({row: 1, column: 2})
+      })
+      it('returns false if no cell in the clue is empty', () => {
+        let clue = {
+          rowStart: 1,
+          rowEnd: 3,
+          columnStart: 3,
+          columnEnd: 3,
+          gridNum: 5
+        }
+        nextCell = crossword.nextEmptyCellWithinClue(clue, 2, 3)
+        expect(nextCell).toEqual(false)
+      })
+    })
+  })
+
+  describe('.hasEmptyCells', () => {
+    let square, clues
+    beforeAll(() => {
+      square =
+        [['a','b','c','.'],
+         ['e','f','g','h'],
+         ['i','j','k','l'],
+         ['.','n','o','p']];
+      clues = {
+        across: ['across1', 'across2', 'across3', 'across4'],
+        down: ['down1', 'down2', 'down3', 'down4']
+      }
+    })
+    it('returns true if there is at least one empty cell', () => {
+      let userSquare =
+        [['a','b','c',''],
+         ['e','f','g','h'],
+         ['i','.','k','l'],
+         ['','n','o','']];
+      let crossword = new Crossword(square, clues, userSquare)
+      expect(crossword.hasEmptyCells()).toBe(true)
+    })
+    it('returns false if there are no empty cells', () => {
+      let userSquare =
+        [['a','b','c',''],
+         ['e','f','g','h'],
+         ['i','j','k','l'],
+         ['','n','o','p']];
+      let crossword = new Crossword(square, clues, userSquare)
+      expect(crossword.hasEmptyCells()).toBe(false)
+    })
+  })
+
+  describe('.nextClue', () => {
+    let square, clues, crossword
+    beforeEach(() => {
+      square =
+        [['a','b','c','.'],
+         ['e','f','g','h'],
+         ['i','j','k','l'],
+         ['.','n','o','p']];
+      clues = {
+        across: ['across1', 'across2', 'across3', 'across4'],
+        down: ['down1', 'down2', 'down3', 'down4']
+      }
+      crossword = new Crossword(square, clues, Crossword.generateEmptyGrid(4))
+    })
+
+    it('returns the next across clue when the current clue is across and not last', () => {
+      let currentClue = new Clue(2, [0, 3], 6)
+      let expectedClue = new Clue(3, [1, 3], 7, 'across4')
+      expect(crossword.nextClue(currentClue)).toEqual(expectedClue)
+    })
+
+    it('returns the first down clue when the current clue is the last across clue', () => {
+      let currentClue = new Clue(3, [1, 3], 7)
+      let expectedClue = new Clue([0, 2], 0, 1, 'down1')
+      expect(crossword.nextClue(currentClue)).toEqual(expectedClue)
+    })
+
+    it('returns the next down clue when the current clue is down and not last', () => {
+      let currentClue = new Clue([0, 2], 0, 1)
+      let expectedClue = new Clue([0, 3], 1, 2, 'down2')
+      expect(crossword.nextClue(currentClue)).toEqual(expectedClue)
+    })
+
+    it('returns the first across clue when the current clue is the last down clue', () => {
+      let currentClue = new Clue([1, 3], 3, 5)
+      let expectedClue = new Clue(0, [0, 2], 1, 'across1')
+      expect(crossword.nextClue(currentClue)).toEqual(expectedClue)
     })
   })
 })

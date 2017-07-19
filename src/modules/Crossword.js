@@ -1,3 +1,5 @@
+import Clue from './Clue'
+
 class Crossword {
   constructor(gridArray, clues, userLetters) {
     this.grid = gridArray
@@ -39,7 +41,6 @@ class Crossword {
     if (this.acrossClues !== undefined) {
       return this.acrossClues
     }
-
     let acrossClues = [];
     let acrossClueTextCopy = this.clues.across.slice();
     let gridNums = this.getGridNums()
@@ -51,12 +52,8 @@ class Crossword {
           continue;
         } else {
           if ((c === 0) || (this.grid[r][c - 1] === '.')) {
-            let clue = {
-              gridNum: gridNums[r][c],
-              row: r,
-              column: c,
-              text: acrossClueTextCopy.shift()
-            }
+            let clue = this.getClueDimensions('across', r, c)
+            clue.text = acrossClueTextCopy.shift()
             acrossClues.push(clue)
           }
         }
@@ -81,12 +78,8 @@ class Crossword {
           continue;
         } else {
           if ((r === 0) || (this.grid[r - 1][c] === '.')) {
-            let clue = {
-              gridNum: gridNums[r][c],
-              row: r,
-              column: c,
-              text: downClueTextCopy.shift()
-            }
+            let clue = this.getClueDimensions('down', r, c)
+            clue.text = downClueTextCopy.shift()
             downClues.push(clue)
           }
         }
@@ -97,6 +90,12 @@ class Crossword {
   }
 
   getSelectedClue(direction, row, column) {
+    let selectedClue = this.getClueDimensions(direction, row, column)
+    let clues = (direction === 'across') ? this.getAcrossClues() : this.getDownClues()
+    return clues.find((clue) => selectedClue.match(clue))
+  }
+
+  getClueDimensions(direction, row, column) {
     let lastIndex = this.grid.length - 1
     if (direction === 'across') {
       let columnStart = column
@@ -107,13 +106,7 @@ class Crossword {
       while (columnEnd < lastIndex && this.grid[row][columnEnd + 1] !== '.') {
         columnEnd += 1;
       }
-      return ({
-        rowStart: row,
-        rowEnd: row,
-        columnStart: columnStart,
-        columnEnd: columnEnd,
-        gridNum: this.getGridNums()[row][columnStart]
-      })
+      return new Clue(row, [columnStart, columnEnd], this.getGridNums()[row][columnStart])
     } else {
       let rowStart = row;
       while (rowStart > 0 && this.grid[rowStart - 1][column] !== '.') {
@@ -123,13 +116,7 @@ class Crossword {
       while (rowEnd < lastIndex && this.grid[rowEnd + 1][column] !== '.') {
         rowEnd += 1;
       }
-      return ({
-        rowStart: rowStart,
-        rowEnd: rowEnd,
-        columnStart: column,
-        columnEnd: column,
-        gridNum: this.getGridNums()[rowStart][column]
-      })
+      return new Clue([rowStart, rowEnd], column, this.getGridNums()[rowStart][column])
     }
   }
 
@@ -217,6 +204,55 @@ class Crossword {
     };
   }
 
+  nextEmptyCellWithinClue(clue, row, col) {
+    let nextCell = this.nextCellWithinClue(clue, row, col);
+    let currentRow = nextCell.row;
+    let currentCol = nextCell.column;
+
+    while((nextCell.row !== row) || (nextCell.column !== col)) {
+      if (this.userLetters[nextCell.row][nextCell.column] === '' ) {
+        return {
+          row: nextCell.row,
+          column: nextCell.column
+        }
+      }
+      nextCell = this.nextCellWithinClue(clue, nextCell.row, nextCell.column);
+    }
+    return false;
+  }
+
+  hasEmptyCells() {
+    for (var i = 0; i < this.grid.length; i++) {
+      for (var j = 0; j < this.grid.length; j++) {
+        if(this.userLetters[i][j] === '' && this.grid[i][j] !== '.') {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  nextClue(clue) {
+    let acrossClues = this.getAcrossClues();
+    let downClues = this.getDownClues();
+    let index = acrossClues.findIndex(el => clue.match(el))
+
+    if (index === -1) {
+      index = downClues.findIndex(el => clue.match(el))
+      if (index === downClues.length - 1){
+        return acrossClues[0];
+      } else {
+        return downClues[index + 1]
+      }
+    } else {
+
+      if (index === acrossClues.length - 1){
+        return downClues[0];
+      } else {
+        return acrossClues[index + 1]
+      }
+    }
+  }
 }
 
 Crossword.generateEmptyGrid = (size) => {
