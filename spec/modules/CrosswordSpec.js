@@ -814,4 +814,44 @@ describe('Crossword', () => {
       expect(crossword.nextClue(currentClue)).toEqual(expectedClue)
     })
   })
+
+  describe('.previousClue', () => {
+    let square, clues, crossword
+    beforeEach(() => {
+      square =
+        [['a','b','c','.'],
+         ['e','f','g','h'],
+         ['i','j','k','l'],
+         ['.','n','o','p']];
+      clues = {
+        across: ['across1', 'across2', 'across3', 'across4'],
+        down: ['down1', 'down2', 'down3', 'down4']
+      }
+      crossword = new Crossword(square, clues, Crossword.generateEmptyGrid(4))
+    })
+
+    it('returns the previous across clue when the current clue is across and not first', () => {
+      let expectedClue = new Clue(2, [0, 3], 6, 'across3')
+      let currentClue = new Clue(3, [1, 3], 7, 'across4')
+      expect(crossword.previousClue(currentClue)).toEqual(expectedClue)
+    })
+
+    it('returns the last across clue when current clue is first down clue', () => {
+      let expectedClue = new Clue(3, [1, 3], 7, 'across4')
+      let currentClue = new Clue([0, 2], 0, 1, 'down1')
+      expect(crossword.previousClue(currentClue)).toEqual(expectedClue)
+    })
+
+    it('returns the previous down clue when the current clue is down and not first', () => {
+      let expectedClue = new Clue([0, 2], 0, 1, 'down1')
+      let currentClue = new Clue([0, 3], 1, 2, 'down2')
+      expect(crossword.previousClue(currentClue)).toEqual(expectedClue)
+    })
+
+    it('returns the last down clue when current clue is first across clue', () => {
+      let expectedClue = new Clue([1, 3], 3, 5, 'down4')
+      let currentClue = new Clue(0, [0, 2], 1, 'across1')
+      expect(crossword.previousClue(currentClue)).toEqual(expectedClue)
+    })
+  })
 })

@@ -69,6 +69,69 @@ describe('UserActionController', () => {
         let newState = controller.keyPress('Backspace');
         expect(newState.userLetters[0][0]).toEqual('')
       })
+
+      describe('when direction is across and the current cell is blank', () => {
+        beforeEach(() => {
+          fakeState.clueDirection = 'across'
+          fakeState.grid =
+          [['.','.','c','d'],
+           ['e','f','g','h'],
+           ['i','j','k','.'],
+           ['m','n','o','.']];
+        })
+
+        it('when not the first cell, deletes and selects previous cell in the current clue', () => {
+          fakeState.setCell(2, 2)
+          fakeState.userLetters[2][1] = 'a'
+          controller = new UserActionController(fakeState);
+          let newState = controller.keyPress('Backspace');
+          expect(newState.userLetters[2][1]).toEqual('');
+          expect(newState.selectedCellRow).toEqual(2);
+          expect(newState.selectedCellColumn).toEqual(1);
+        })
+        it('when the first cell, deletes and selects last cell in previous clue', () => {
+          fakeState.setCell(0, 2)
+          fakeState.userLetters[3][1] = 'a'
+          controller = new UserActionController(fakeState);
+          let newState = controller.keyPress('Backspace');
+          expect(newState.userLetters[3][1]).toEqual('');
+          expect(newState.selectedCellRow).toEqual(3);
+          expect(newState.selectedCellColumn).toEqual(1);
+          expect(newState.clueDirection).toEqual('down');
+        })
+      })
+
+      describe('when direction is down and the current cell is blank', () => {
+        beforeEach(() => {
+          fakeState.clueDirection = 'down'
+          fakeState.grid =
+          [['.','.','c','d'],
+           ['e','f','g','h'],
+           ['i','j','k','.'],
+           ['m','n','o','.']];
+        })
+
+        it('when not the first cell, deletes and selects previous cell in the current clue', () => {
+          fakeState.setCell(2, 2)
+          fakeState.userLetters[1][2] = 'a'
+          controller = new UserActionController(fakeState);
+          let newState = controller.keyPress('Backspace');
+          expect(newState.userLetters[1][2]).toEqual('');
+          expect(newState.selectedCellRow).toEqual(1);
+          expect(newState.selectedCellColumn).toEqual(2);
+        })
+
+        it('when the first cell, deletes and selects last cell in previous clue', () => {
+          fakeState.setCell(0, 2)
+          fakeState.userLetters[3][2] = 'a'
+          controller = new UserActionController(fakeState);
+          let newState = controller.keyPress('Backspace');
+          expect(newState.userLetters[3][2]).toEqual('');
+          expect(newState.selectedCellRow).toEqual(3);
+          expect(newState.selectedCellColumn).toEqual(2);
+          expect(newState.clueDirection).toEqual('across');
+        })
+      })
     })
 
     describe('spacebar', () => {
